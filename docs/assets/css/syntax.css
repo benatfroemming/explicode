@@ -1,6 +1,13 @@
 /* VS Code Light+ inspired theme */
 
 .highlight {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* Actual code block */
+.highlight pre {
   background: #ffffff;
   color: #1e1e1e;
   padding: 16px 18px;
@@ -10,6 +17,7 @@
   line-height: 1.5;
   font-size: 0.95rem;
   font-family: Consolas, "Courier New", monospace;
+  margin: 0;
 }
 
 .highlight pre {
