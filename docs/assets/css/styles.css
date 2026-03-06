@@ -123,3 +123,22 @@ pre.highlight {
 .highlight .hll {
   background: #f0f0f0;
 }
+
+.faq-item {
+  margin-bottom: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 6px 12px;
+  background: #fafafa;
+}
+
+.faq-item summary {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.faq-item p {
+  margin-top: 10px;
+  line-height: 1.6;
+}
