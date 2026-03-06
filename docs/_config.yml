@@ -1,3 +1,5 @@
+baseurl: "/docs"
+
 title: ""
 
 markdown: kramdown

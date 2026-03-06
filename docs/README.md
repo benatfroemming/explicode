@@ -1,4 +1,7 @@
-# Explicode
+<h1>
+  <img src="img/logo.svg" alt="Logo" width="40" align="center">
+   Explicode
+</h1>
  
 > **Explicode** lets you write rich **Markdown** documentation directly inside your **code comments**, turning a single source file into both **runnable code and beautifully rendered documentation**.
 
