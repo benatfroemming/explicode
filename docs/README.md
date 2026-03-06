@@ -205,7 +205,7 @@ Need support for another language? Open an issue or reach out.
   Reach out at <a href="mailto:froem076@umn.edu">froem076@umn.edu</a>.
 </p>
 
-<hr style="margin: 40px 0; border: none; border-top: 1px solid #e5e7eb;">
+<hr style="margin: 30px 0; border: none;">
 
 <p align="center" style="color:#6b7280; font-size:0.9rem;">
   <img src="img/logo.svg" alt="Explicode logo" width="20" style="vertical-align: middle; margin-right:8px;">
