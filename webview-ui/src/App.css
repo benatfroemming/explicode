@@ -1,0 +1,342 @@
+@import 'katex/dist/katex.min.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gh-scrollbar-thumb) var(--gh-scrollbar-track);
+}
+
+/* ── Dark theme ── */
+.ghmd-dark {
+  --gh-canvas:          #0d1117;
+  --gh-canvas-subtle:   #161b22;
+  --gh-border:          #30363d;
+  --gh-border-muted:    #21262d;
+  --gh-fg:              #e6edf3;
+  --gh-fg-muted:        #8b949e;
+  --gh-fg-subtle:       #6e7681;
+  --gh-accent:          #58a6ff;
+  --gh-accent-emphasis: #1f6feb;
+  --gh-accent-subtle:   rgba(56,139,253,0.15);
+  --gh-neutral-muted:   rgba(110,118,129,0.4);
+  --gh-header-bg:       #161b22;
+  --gh-shadow:          rgba(1,4,9,0.8);
+  --gh-scrollbar-track: #161b22;
+  --gh-scrollbar-thumb: #30363d;
+  --gh-scrollbar-hover: #484f58;
+}
+
+/* ── Light theme ── */
+.ghmd-light {
+  --gh-canvas:          #ffffff;
+  --gh-canvas-subtle:   #f6f8fa;
+  --gh-border:          #d0d7de;
+  --gh-border-muted:    #d8dee4;
+  --gh-fg:              #1f2328;
+  --gh-fg-muted:        #636c76;
+  --gh-fg-subtle:       #6e7781;
+  --gh-accent:          #0969da;
+  --gh-accent-emphasis: #0969da;
+  --gh-accent-subtle:   #ddf4ff;
+  --gh-neutral-muted:   rgba(175,184,193,0.2);
+  --gh-header-bg:       #f6f8fa;
+  --gh-shadow:          rgba(31,35,40,0.12);
+  --gh-scrollbar-track: #f6f8fa;
+  --gh-scrollbar-thumb: #d0d7de;
+  --gh-scrollbar-hover: #afb8c1;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.app-container {
+  background: var(--gh-canvas);
+  color: var(--gh-fg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.app-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 50px;
+  background: var(--gh-header-bg);
+  border-bottom: 1px solid var(--gh-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 9999;
+}
+
+.header-left { display: flex; align-items: center; }
+
+.header-right {
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+.title {
+  margin-left: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gh-fg);
+}
+
+.file-badge {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gh-fg-muted);
+  margin-left: 20px;
+  padding: 2px 10px;
+  background: var(--gh-neutral-muted);
+  border-radius: 2em;
+  border: 1px solid var(--gh-border);
+}
+
+/* ── Scrollable content ── */
+.doc-content {
+  position: fixed;
+  top: 50px;
+  bottom: 0;
+  left: 0; right: 0;
+  background: var(--gh-canvas);
+  overflow-y: auto;
+}
+
+/* ── Icons ── */
+.settings-icon {
+  height: 18px; width: 18px;
+  color: var(--gh-fg-muted);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.settings-icon:hover { color: var(--gh-fg); }
+
+/* ── Dropdown ── */
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 180px;
+  background: var(--gh-canvas-subtle);
+  border: 1px solid var(--gh-border);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px var(--gh-shadow);
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  z-index: 10000;
+}
+.dropdown-menu button {
+  background: none;
+  border: none;
+  color: var(--gh-fg);
+  padding: 7px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+.dropdown-menu button:hover { background: var(--gh-neutral-muted); }
+
+/* ── Empty state ── */
+.empty-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.2; color: var(--gh-fg-muted); }
+.empty-title { font-size: 20px; font-weight: 600; color: var(--gh-fg); margin-bottom: 8px; }
+.empty-subtitle { font-size: 14px; color: var(--gh-fg-muted); }
+
+/* ── Unsupported language state ── */
+.unsupported-language {
+  text-align: center;
+  padding: 48px 32px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.unsupported-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+.unsupported-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gh-fg);
+  margin-bottom: 8px;
+}
+.unsupported-subtitle {
+  font-size: 14px;
+  color: var(--gh-fg-muted);
+  margin-bottom: 16px;
+}
+.unsupported-hint {
+  font-size: 12px;
+  color: var(--gh-fg-subtle);
+  line-height: 1.6;
+  padding: 12px 16px;
+  background: var(--gh-canvas-subtle);
+  border: 1px solid var(--gh-border);
+  border-radius: 6px;
+}
+
+/* ── Scrollbars ── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--gh-scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--gh-scrollbar-thumb); border-radius: 6px; border: 2px solid var(--gh-scrollbar-track); }
+::-webkit-scrollbar-thumb:hover { background: var(--gh-scrollbar-hover); }
+::-webkit-scrollbar-corner { background: var(--gh-scrollbar-track); }
+::selection { background: var(--gh-accent-subtle); color: var(--gh-fg); }
+
+/* ── Doc container (DocRenderer root) ── */
+.doc-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 48px;
+}
+
+/* ── Segments — increased gap between items ── */
+.seg-code {
+  margin: 0 0 24px 0;
+}
+
+.seg-doc {
+  margin: 0 0 24px 0;
+  background: var(--gh-canvas);
+}
+
+/* ── GitHub Markdown styles (.ghmd) ── */
+.ghmd {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  color: var(--gh-fg);
+}
+
+.ghmd h1, .ghmd h2, .ghmd h3,
+.ghmd h4, .ghmd h5, .ghmd h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--gh-fg);
+}
+.ghmd h1:first-child,
+.ghmd h2:first-child,
+.ghmd h3:first-child { margin-top: 0; }
+
+.ghmd h1 { font-size: 2em;    padding-bottom: .3em; border-bottom: 1px solid var(--gh-border-muted); }
+.ghmd h2 { font-size: 1.5em;  padding-bottom: .3em; border-bottom: 1px solid var(--gh-border-muted); }
+.ghmd h3 { font-size: 1.25em; }
+.ghmd h4 { font-size: 1em; }
+.ghmd h5 { font-size: .875em; }
+.ghmd h6 { font-size: .85em; color: var(--gh-fg-muted); }
+
+.ghmd p { margin-top: 0; margin-bottom: 16px; color: var(--gh-fg); }
+.ghmd p:last-child { margin-bottom: 0; }
+
+.ghmd a { color: var(--gh-accent); text-decoration: none; }
+.ghmd a:hover { text-decoration: underline; }
+
+.ghmd ul, .ghmd ol { margin-top: 0; margin-bottom: 16px; padding-left: 2em; color: var(--gh-fg); }
+.ghmd li { margin-top: .25em; }
+.ghmd li + li { margin-top: .25em; }
+.ghmd li > p { margin-top: 16px; }
+
+.ghmd blockquote {
+  margin: 0 0 16px 0;
+  padding: 0 1em;
+  color: var(--gh-fg-muted);
+  border-left: .25em solid var(--gh-border);
+  background: transparent;
+  font-style: normal;
+}
+.ghmd blockquote > :first-child { margin-top: 0; }
+.ghmd blockquote > :last-child  { margin-bottom: 0; }
+
+.ghmd hr { height: .25em; padding: 0; margin: 24px 0; background-color: var(--gh-border); border: 0; border-radius: 2px; }
+
+.ghmd img { max-width: 100%; height: auto; display: block; margin: 16px auto; border-radius: 6px; }
+
+.ghmd strong { font-weight: 600; color: var(--gh-fg); }
+.ghmd em { font-style: italic; }
+
+/* Inline code */
+.ghmd-inline-code,
+.ghmd :not(pre) > code {
+  padding: .2em .4em;
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: var(--gh-neutral-muted);
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  color: var(--gh-fg);
+}
+
+/* Code blocks */
+.ghmd pre {
+  margin-bottom: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: var(--gh-canvas-subtle);
+  border-radius: 6px;
+  border: 1px solid var(--gh-border);
+  padding: 16px;
+}
+.ghmd pre code {
+  display: inline;
+  padding: 0; margin: 0;
+  overflow: visible;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+  font-size: 100%;
+}
+
+/* Tables */
+.ghmd table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: auto;
+  margin-bottom: 16px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.ghmd th, .ghmd td { padding: 6px 13px; border: 1px solid var(--gh-border); color: var(--gh-fg); }
+.ghmd th { font-weight: 600; background-color: var(--gh-canvas-subtle); }
+.ghmd tr { background-color: var(--gh-canvas); border-top: 1px solid var(--gh-border-muted); }
+.ghmd tr:nth-child(2n) { background-color: var(--gh-canvas-subtle); }
+
+/* Task lists */
+.ghmd input[type="checkbox"] { margin-right: 6px; accent-color: var(--gh-accent-emphasis); }
+
+/* KaTeX */
+.ghmd .katex { color: var(--gh-fg) !important; font-size: 1.1em; }
+.ghmd .katex .mord,
+.ghmd .katex .mop,
+.ghmd .katex .mbin,
+.ghmd .katex .mrel,
+.ghmd .katex .mopen,
+.ghmd .katex .mclose,
+.ghmd .katex .mpunct { color: var(--gh-fg) !important; }
+
+@media print {
+  .app-header { display: none; }
+  body { background: white; color: black; }
+  pre { page-break-inside: avoid; }
+}
