@@ -1,16 +1,17 @@
 /* VS Code Light+ inspired theme */
 
+/* Reset Rouge container */
 .highlight {
-  background: none;
+  background: transparent;
   border: none;
   padding: 0;
 }
 
-/* Actual code block */
+/* Style the actual code block */
 .highlight pre {
   background: #ffffff;
   color: #1e1e1e;
-  padding: 16px 18px;
+  padding: 14px 16px;
   border-radius: 6px;
   border: 1px solid #e5e7eb;
   overflow-x: auto;
@@ -18,6 +19,13 @@
   font-size: 0.95rem;
   font-family: Consolas, "Courier New", monospace;
   margin: 0;
+}
+
+/* Remove possible theme styling */
+pre.highlight {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  padding: 14px 16px;
 }
 
 .highlight pre {
