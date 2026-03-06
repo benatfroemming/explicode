@@ -1,6 +1,6 @@
-baseurl: "/explicode"
-
 title: ""
+baseurl: ""
+url: "https://explicode.com"
 
 markdown: kramdown
 highlighter: rouge
