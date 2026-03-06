@@ -1,0 +1,109 @@
+/* VS Code Light+ inspired theme */
+
+.highlight {
+  background: #ffffff;
+  color: #1e1e1e;
+  padding: 16px 18px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  overflow-x: auto;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.highlight pre {
+  margin: 0;
+}
+
+/* Comments */
+.highlight .c,
+.highlight .cm,
+.highlight .c1,
+.highlight .cs {
+  color: #008000;
+  font-style: italic;
+}
+
+/* Keywords */
+.highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt {
+  color: #0000ff;
+}
+
+/* Strings */
+.highlight .s,
+.highlight .s1,
+.highlight .s2,
+.highlight .sb,
+.highlight .sc {
+  color: #a31515;
+}
+
+/* Numbers */
+.highlight .m,
+.highlight .mi,
+.highlight .mf {
+  color: #098658;
+}
+
+/* Functions */
+.highlight .nf {
+  color: #795e26;
+}
+
+/* Classes / types */
+.highlight .nc,
+.highlight .kt {
+  color: #267f99;
+}
+
+/* Variables / identifiers */
+.highlight .n {
+  color: #1e1e1e;
+}
+
+/* Builtins */
+.highlight .nb {
+  color: #267f99;
+}
+
+/* Operators */
+.highlight .o {
+  color: #000000;
+}
+
+/* Punctuation */
+.highlight .p {
+  color: #1e1e1e;
+}
+
+/* Attributes */
+.highlight .na {
+  color: #e50000;
+}
+
+/* HTML / XML tags */
+.highlight .nt {
+  color: #800000;
+}
+
+/* Decorators / annotations */
+.highlight .nd {
+  color: #af00db;
+}
+
+/* Regex / special strings */
+.highlight .sr {
+  color: #811f3f;
+}
+
+/* Highlighted line (optional if using line highlights) */
+.highlight .hll {
+  background: #f0f0f0;
+}
