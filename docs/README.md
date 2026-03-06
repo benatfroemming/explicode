@@ -6,7 +6,9 @@ Because the documentation lives inside comments, it doesn’t affect your progra
 
 <br>
 
-[![Download VS Code Extension](https://img.shields.io/badge/Download_VS_Code_Extension-0078D4?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)
+[![](https://img.shields.io/badge/Download-0078D4?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)[![](https://img.shields.io/badge/VS_Code_Extension-005a9e?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)
+
+[![View on GitHub](https://img.shields.io/badge/View_on_GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/benatfroemming/explicode)
 
 ## Features
 
@@ -18,7 +20,7 @@ Because the documentation lives inside comments, it doesn’t affect your progra
 
 ## How It Works
 
-![](https://raw.githubusercontent.com/benatfroemming/explicode-extension/master/demo.gif)
+![](https://raw.githubusercontent.com/benatfroemming/explicode/refs/heads/main/docs/demo.gif)
 
 <br>
 
