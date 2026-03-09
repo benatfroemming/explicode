@@ -37,7 +37,7 @@ type Segment = { type: 'doc'; content: string } | { type: 'code'; content: strin
 
 // Languages that support /* */ or /** */ style block comments
 const C_STYLE_LANGUAGES = new Set([
-  'c', 'cpp', 'csharp', 'java', 'javascript', 'typescript',
+  'c', 'cpp', 'cuda', 'csharp', 'java', 'javascript', 'typescript',
   'javascriptreact', 'typescriptreact', 'go', 'rust', 'php',
   'swift', 'kotlin', 'scala', 'dart', 'objective-c', 'sql',
 ]);
@@ -181,6 +181,7 @@ export function buildSegments(fileText: string, language: string): Segment[] {
 const PRISM_LANG: Record<string, string> = {
   javascriptreact: 'jsx',
   typescriptreact: 'tsx',
+  cuda:            'c',
   csharp:          'csharp',
   'objective-c':   'objectivec',
 };
@@ -200,7 +201,7 @@ const DocRenderer: React.FC<DocRendererProps> = ({ fileText, language, theme, re
         <div className="unsupported-language">
           <p className="unsupported-title">Language not supported</p>
           <p className="unsupported-hint">
-            Supported: Python, JavaScript, TypeScript, JSX, TSX, C, C++, C#, Java, Go,
+            Supported: Python, JavaScript, TypeScript, JSX, TSX, C, C++, CUDA, C#, Java, Go,
             Rust, PHP, Swift, Kotlin, Scala, Dart, Objective-C, SQL, and Markdown.
           </p>
         </div>
