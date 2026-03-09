@@ -117,6 +117,7 @@ Explicode currently supports:
 - JSX / TSX
 - Java
 - C / C++ / C#
+- CUDA
 - Go
 - Rust
 - PHP

@@ -2,21 +2,15 @@
   "name": "explicode",
   "displayName": "Explicode",
   "publisher": "Explicode",
-  "description": "Explicode lets you write rich Markdown documentation directly inside your code comments, turning a single source file into both runnable code and rendered documentation",
-  "version": "0.1.0",
+  "description": "Turn a source file into both runnable code and rendered documentation.",
+  "version": "0.1.2",
   "icon": "images/logo.png",
   "keywords": [
     "documentation",
     "markdown",
     "literate programming",
     "comments",
-    "preview",
-    "math",
-    "latex",
-    "docs",
-    "tutorial",
-    "research",
-    "code documentation"
+    "docs"
   ],
   "repository": {
     "type": "git",
@@ -28,6 +22,9 @@
   "categories": [
     "Other"
   ],
+  "bin": {
+    "explicode": "./cli.js"
+  },
   "activationEvents": [
     "onCommand:explicode.openReact",
     "onCommand:explicode.openFileInExplicode"
