@@ -176,7 +176,7 @@ function App() {
       js: 'javascript', ts: 'typescript',
       jsx: 'javascriptreact', tsx: 'typescriptreact',
       java: 'java',
-      cpp: 'cpp', cc: 'cpp', cxx: 'cpp',
+      cpp: 'cpp', cc: 'cpp', cxx: 'cpp', hpp: 'cpp', hxx: 'cpp',
       c: 'c', h: 'c',
       cu: 'cuda', cuh: 'cuda',
       cs: 'csharp',
@@ -207,7 +207,7 @@ function App() {
             type="file"
             ref={fileInputRef}
             style={{ display: 'none' }}
-            accept=".md,.mdx,.py,.js,.ts,.jsx,.tsx,.java,.cpp,.cc,.cxx,.c,.h,.cu,.cuh,.cs,.rs,.go,.php,.swift,.kt,.kts,.dart,.sql"
+            accept=".md,.mdx,.py,.js,.ts,.jsx,.tsx,.java,.cpp,.cc,.cxx,.hpp,.hxx,.c,.h,.cu,.cuh,.cs,.rs,.go,.php,.swift,.kt,.kts,.dart,.sql"
             onChange={handleFileSelected}
           />
           {dropdownOpen && (
