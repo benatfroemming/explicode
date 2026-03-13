@@ -26,8 +26,8 @@ The *VS Code extension* provides live previews of your documentation directly in
 
 ## Quick Start
 
-- 📘 [VS Code Extension Documentation](./docs/vscode.md) – Learn how to install and use the live preview inside your IDE.  
-- 💻 [Generate Documentation via CLI](./docs/pages.md) – Build GitHub Pages documentation sites directly from your source files.
+- 📘 [VS Code Extension Documentation](./vscode.md) – Learn how to install and use the live preview inside your IDE.  
+- 💻 [Generate Documentation via CLI](./pages.md) – Build GitHub Pages documentation sites directly from your source files.
 
 ## Guidelines
 
