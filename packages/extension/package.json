@@ -22,9 +22,6 @@
   "categories": [
     "Other"
   ],
-  "bin": {
-    "explicode": "./cli.js"
-  },
   "activationEvents": [
     "onCommand:explicode.openReact",
     "onCommand:explicode.openFileInExplicode"

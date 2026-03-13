@@ -1,0 +1,25 @@
+{
+    "name": "explicode",
+    "version": "1.0.1",
+    "description": "Turn your codebase into documentation.",
+    "keywords": [
+        "documentation",
+        "markdown",
+        "comments",
+        "docs",
+        "literate-programming",
+        "developer-tools",
+        "github-pages"
+    ],
+    "bin": {
+        "explicode": "./cli.js"
+    },
+    "files": [
+        "cli.js",
+        "index.template.html",
+        "ghmd-dark.css",
+        "ghmd-light.css"
+    ],
+    "engines": { "node": ">=16" },
+    "license": "MIT"
+}

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{TITLE}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="ghmd.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    var githubBase = '{{GITHUB_BASE}}';
+    var repoUrl = githubBase ? githubBase.replace(/\/blob\/[^\/]+$/, '') : '';
+
+    var explicodePlugin = function(hook) {
+      var closedFolders = new Set();
+      var foldersInitialized = false;
+      var TRANSITION = '280ms cubic-bezier(0.4,0,0.2,1)';
+      var currentFilePath = 'README.md';
+
+      hook.beforeEach(function(content, next) {
+        var hash = window.location.hash.replace(/^#\/?/, '').replace(/\?.*$/, '');
+        if (!hash) {
+          currentFilePath = 'README.md';
+        } else {
+          if (hash.endsWith('.md')) {
+            var withoutMd = hash.slice(0, -3);
+            var dotIdx = withoutMd.lastIndexOf('.');
+            var ext = dotIdx !== -1 ? withoutMd.slice(dotIdx + 1).toLowerCase() : '';
+            currentFilePath = (ext && ext !== 'md') ? withoutMd : hash;
+          } else {
+            currentFilePath = hash;
+          }
+        }
+        next(content);
+      });
+
+      hook.mounted(function() {
+        var builtIn = document.querySelector('.sidebar-toggle');
+        if (builtIn) builtIn.style.display = 'none';
+
+        var sidebar = document.querySelector('.sidebar');
+        sidebar.style.overflow = 'hidden';
+        sidebar.style.display = 'flex';
+        sidebar.style.flexDirection = 'column';
+        sidebar.style.padding = '0';
+
+        var scrollWrap = document.createElement('div');
+        scrollWrap.className = 'xp-sidebar-scroll';
+        var nodes = Array.from(sidebar.childNodes);
+        nodes.forEach(function(n) {
+          if (n.nodeName !== 'H1') scrollWrap.appendChild(n);
+        });
+        sidebar.appendChild(scrollWrap);
+
+        var footer = document.createElement('div');
+        footer.className = 'xp-sidebar-footer';
+        var wmSpan = document.createElement('span');
+        wmSpan.innerHTML = 'Made with <a href="https://explicode.com" target="_blank"><strong>Explicode</strong></a>';
+        footer.appendChild(wmSpan);
+        sidebar.appendChild(footer);
+
+        var toggle = document.createElement('button');
+        toggle.id = 'xp-toggle';
+        toggle.setAttribute('aria-label', 'Toggle sidebar');
+        toggle.innerHTML = '&#x2039;';
+        document.body.appendChild(toggle);
+
+        var mobileBtn = document.createElement('button');
+        mobileBtn.id = 'xp-mobile-btn';
+        mobileBtn.setAttribute('aria-label', 'Toggle sidebar');
+        mobileBtn.innerHTML =
+          '<span class="xp-mb-bars"><span></span><span></span><span></span></span>' +
+          '<span class="xp-mb-close">&#x2715;</span>';
+        document.body.appendChild(mobileBtn);
+
+        var drag = document.createElement('div');
+        drag.className = 'xp-drag';
+        document.body.appendChild(drag);
+
+        var isMobile = function() { return window.innerWidth < 600; };
+
+        function getSidebarWidth() {
+          return parseInt(sidebar.style.width) || sidebar.offsetWidth || 270;
+        }
+
+        function updateDragVisibility(open) {
+          if (isMobile() || !open) {
+            drag.style.transition = 'opacity 120ms ease';
+            drag.style.opacity = '0';
+            drag.style.pointerEvents = 'none';
+          } else {
+            drag.style.transition = 'opacity 200ms ease 260ms';
+            drag.style.opacity = '1';
+            drag.style.pointerEvents = '';
+          }
+        }
+
+        function syncPositions(w, animate) {
+          if (isMobile()) return;
+          var content = document.querySelector('.content');
+          var dur = animate ? TRANSITION : 'none';
+          sidebar.style.transition = 'transform ' + dur + ', width ' + dur;
+          if (content) { content.style.transition = 'left ' + dur; content.style.left = w + 'px'; }
+          drag.style.left = w + 'px';
+          toggle.style.left = (w - 1) + 'px';
+        }
+
+        function setMobileBtnIcon(open) {
+          mobileBtn.setAttribute('data-open', open ? 'true' : 'false');
+        }
+
+        function setOpen(open, animate) {
+          var w = getSidebarWidth();
+          var mobile = isMobile();
+          var dur = animate ? TRANSITION : 'none';
+          var content = document.querySelector('.content');
+
+          if (open) {
+            document.body.classList.remove('close');
+            toggle.innerHTML = '&#x2039;';
+            if (mobile) {
+              sidebar.style.transition = 'transform ' + dur;
+              sidebar.style.transform = 'translateX(0)';
+              setMobileBtnIcon(true);
+              if (content) { content.style.left = ''; }
+            } else {
+              syncPositions(w, animate);
+            }
+          } else {
+            document.body.classList.add('close');
+            toggle.innerHTML = '&#x203a;';
+            if (mobile) {
+              sidebar.style.transition = 'transform ' + dur;
+              sidebar.style.transform = 'translateX(-100%)';
+              setMobileBtnIcon(false);
+              if (content) { content.style.left = ''; }
+            } else {
+              sidebar.style.transition = 'transform ' + dur;
+              toggle.style.transition = 'left ' + dur;
+              toggle.style.left = '0px';
+              if (content) { content.style.transition = 'left ' + dur; content.style.left = '0'; }
+            }
+          }
+          updateDragVisibility(open);
+        }
+
+        toggle.addEventListener('click', function() {
+          var isOpen = !document.body.classList.contains('close');
+          setOpen(!isOpen, true);
+        });
+
+        mobileBtn.addEventListener('click', function() {
+          var isOpen = !document.body.classList.contains('close');
+          setOpen(!isOpen, true);
+        });
+
+        var lastMobile = isMobile();
+        window.addEventListener('resize', function() {
+          var nowMobile = isMobile();
+          var isOpen = !document.body.classList.contains('close');
+          var w = getSidebarWidth();
+
+          if (nowMobile !== lastMobile) {
+            lastMobile = nowMobile;
+            if (nowMobile) {
+              var content = document.querySelector('.content');
+              if (content) content.style.left = '';
+              if (!isOpen) {
+                sidebar.style.transition = 'none';
+                sidebar.style.transform = 'translateX(-100%)';
+                setMobileBtnIcon(false);
+              } else {
+                sidebar.style.transform = 'translateX(0)';
+                setMobileBtnIcon(true);
+              }
+            } else {
+              sidebar.style.transform = '';
+              if (isOpen) {
+                syncPositions(w, false);
+              } else {
+                var content = document.querySelector('.content');
+                if (content) content.style.left = '0';
+                toggle.style.left = '0px';
+              }
+            }
+          } else if (!nowMobile && isOpen) {
+            syncPositions(w, false);
+          }
+          updateDragVisibility(isOpen);
+        });
+
+        if (isMobile()) {
+          lastMobile = true;
+          sidebar.style.transition = 'none';
+          sidebar.style.transform = 'translateX(-100%)';
+          document.body.classList.add('close');
+          setMobileBtnIcon(false);
+          var content = document.querySelector('.content');
+          if (content) content.style.left = '';
+        } else {
+          syncPositions(getSidebarWidth(), false);
+        }
+        updateDragVisibility(!document.body.classList.contains('close'));
+
+        var startX, startW;
+        drag.addEventListener('mousedown', function(e) {
+          if (isMobile()) return;
+          e.preventDefault();
+          startX = e.clientX;
+          startW = getSidebarWidth();
+          document.body.style.userSelect = 'none';
+          document.body.style.cursor = 'col-resize';
+          sidebar.style.transition = 'none';
+          var content = document.querySelector('.content');
+          if (content) content.style.transition = 'none';
+          drag.style.transition = 'none';
+          toggle.style.transition = 'none';
+
+          function onMove(e) {
+            var w = Math.max(180, Math.min(600, startW + e.clientX - startX));
+            var content = document.querySelector('.content');
+            sidebar.style.width = w + 'px';
+            if (content) content.style.left = w + 'px';
+            drag.style.left = w + 'px';
+            toggle.style.left = (w - 1) + 'px';
+          }
+          function onUp() {
+            document.body.style.userSelect = '';
+            document.body.style.cursor = '';
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+          }
+          document.addEventListener('mousemove', onMove);
+          document.addEventListener('mouseup', onUp);
+        });
+      });
+
+      hook.doneEach(function() {
+        var sidebar = document.querySelector('.sidebar');
+
+        if (repoUrl) {
+          var h1 = sidebar.querySelector('h1');
+          if (h1) {
+            var titleA = h1.querySelector('a');
+            if (titleA) titleA.target = '_blank';
+          }
+        }
+
+        var scrollWrap = sidebar.querySelector('.xp-sidebar-scroll');
+        if (!scrollWrap) {
+          scrollWrap = document.createElement('div');
+          scrollWrap.className = 'xp-sidebar-scroll';
+          var footer = sidebar.querySelector('.xp-sidebar-footer');
+          var nodes = Array.from(sidebar.childNodes).filter(function(n) {
+            return !n.classList || !n.classList.contains('xp-sidebar-footer');
+          });
+          nodes.forEach(function(n) { scrollWrap.appendChild(n); });
+          sidebar.insertBefore(scrollWrap, footer || null);
+        }
+
+        var drag = document.querySelector('.xp-drag');
+        var toggle = document.getElementById('xp-toggle');
+        var isOpen = !document.body.classList.contains('close');
+        if (drag && toggle) {
+          var w = parseInt(sidebar.style.width) || sidebar.offsetWidth || 270;
+          if (isOpen && window.innerWidth >= 600) {
+            drag.style.left = w + 'px';
+            toggle.style.left = (w - 1) + 'px';
+            drag.style.opacity = '1';
+            drag.style.pointerEvents = '';
+          } else {
+            drag.style.left = w + 'px';
+            toggle.style.left = '0px';
+            drag.style.opacity = '0';
+            drag.style.pointerEvents = 'none';
+          }
+        }
+
+        function updateGhBtn() {
+          var existing = document.getElementById('xp-gh-page-btn');
+          if (existing) existing.remove();
+          if (!githubBase || !currentFilePath) return;
+          var btn = document.createElement('a');
+          btn.id = 'xp-gh-page-btn';
+          btn.href = githubBase + '/' + currentFilePath;
+          btn.target = '_blank';
+          btn.rel = 'noopener noreferrer';
+          btn.setAttribute('aria-label', 'View on GitHub');
+          btn.title = 'View on GitHub';
+          btn.innerHTML = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
+          document.body.appendChild(btn);
+        }
+        updateGhBtn();
+
+        var nav = sidebar.querySelector('.sidebar-nav');
+        if (!nav) return;
+
+        nav.querySelectorAll('li').forEach(function(li) {
+          li.classList.remove('collapse');
+          var ul = li.querySelector(':scope > ul');
+          if (ul && !ul.closest('[data-xp-folder-ul]')) ul.style.display = '';
+        });
+
+        nav.querySelectorAll('li').forEach(function(li) {
+          if (li.dataset.xpFolder) return;
+          var labelEl = li.querySelector(':scope > p > strong') || li.querySelector(':scope > strong');
+          if (!labelEl) return;
+          var subUl = li.querySelector(':scope > ul');
+          if (!subUl) return;
+          subUl.setAttribute('data-xp-folder-ul', '1');
+
+          var folderName = labelEl.textContent.trim();
+
+          li.dataset.xpFolder = '1';
+          li.classList.remove('collapse');
+          subUl.setAttribute('data-xp-folder-ul', '1');
+
+          var btn = document.createElement('button');
+          btn.className = 'xp-folder-btn';
+
+          var iconSpan = document.createElement('span');
+          var labelSpan = document.createElement('span');
+          labelSpan.className = 'xp-folder-label';
+          labelSpan.textContent = folderName;
+
+          btn.appendChild(iconSpan);
+          btn.appendChild(labelSpan);
+
+          var wrapper = labelEl.closest('p') || labelEl;
+          li.insertBefore(btn, wrapper);
+          wrapper.remove();
+
+          var isOpen = foldersInitialized ? !closedFolders.has(folderName) : false;
+          btn.setAttribute('data-open', isOpen ? 'true' : 'false');
+          iconSpan.className = 'xp-folder-icon ' + (isOpen ? 'xp-folder-open' : 'xp-folder-closed');
+          subUl.style.display = isOpen ? '' : 'none';
+
+          btn.addEventListener('click', function() {
+            var open = btn.getAttribute('data-open') === 'true';
+            var nowOpen = !open;
+            btn.setAttribute('data-open', nowOpen ? 'true' : 'false');
+            iconSpan.className = 'xp-folder-icon ' + (nowOpen ? 'xp-folder-open' : 'xp-folder-closed');
+            subUl.style.display = nowOpen ? '' : 'none';
+            if (nowOpen) closedFolders.delete(folderName);
+            else closedFolders.add(folderName);
+          });
+        });
+
+        foldersInitialized = true;
+
+        nav.querySelectorAll('a').forEach(function(a) {
+          if (a.dataset.xpIcon) return;
+          if (a.closest('.app-sub-sidebar')) return;
+          a.dataset.xpIcon = '1';
+          var icon = document.createElement('span');
+          icon.className = 'xp-item-icon xp-file-icon';
+          a.insertBefore(icon, a.firstChild);
+        });
+
+        nav.querySelectorAll('.app-sub-sidebar a').forEach(function(a) {
+          if (a.dataset.xpIcon) return;
+          a.dataset.xpIcon = '1';
+          var icon = document.createElement('span');
+          icon.className = 'xp-item-icon xp-hash-icon';
+          a.insertBefore(icon, a.firstChild);
+        });
+
+        nav.querySelectorAll('a').forEach(function(a) {
+          if (a.dataset.xpMobileClose) return;
+          a.dataset.xpMobileClose = '1';
+          a.addEventListener('click', function() {
+            if (window.innerWidth < 600) {
+              setTimeout(function() {
+                document.body.classList.add('close');
+                var sb = document.querySelector('.sidebar');
+                if (sb) {
+                  sb.style.transition = 'transform 280ms cubic-bezier(0.4,0,0.2,1)';
+                  sb.style.transform = 'translateX(-100%)';
+                }
+                var mb = document.getElementById('xp-mobile-btn');
+                if (mb) mb.setAttribute('data-open', 'false');
+                var tg = document.getElementById('xp-toggle');
+                if (tg) tg.innerHTML = '&#x203a;';
+              }, 10);
+            }
+          });
+        });
+
+        if (githubBase) {
+          nav.querySelectorAll('span.xp-unrendered[data-path]').forEach(function(span) {
+            if (span.dataset.xpGh) return;
+            span.dataset.xpGh = '1';
+            span.style.cursor = 'pointer';
+            span.addEventListener('click', function() {
+              window.open(githubBase + '/' + span.dataset.path, '_blank', 'noopener noreferrer');
+            });
+          });
+        }
+      });
+    };
+
+    var titleLockPlugin = function(hook) {
+      hook.doneEach(function() { document.title = '{{TITLE}}'; });
+    };
+
+    window.$docsify = {
+      name: '{{TITLE}}',
+      nameLink: repoUrl || '/',
+      repo: '',
+      loadSidebar: true,
+      subMaxLevel: 2,
+      auto2top: true,
+      plugins: [explicodePlugin, titleLockPlugin],
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-jsx.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-tsx.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-c.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-cpp.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-csharp.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-rust.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-scala.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-dart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-php.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-katex@1/dist/docsify-katex.js"></script>
+</body>
+</html>
