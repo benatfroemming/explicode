@@ -1,4 +1,4 @@
-[← Go Back](../README.md)
+[← Go Back](./README.md)
 
 # Quick Start: Command-Line Interface & GitHub Pages
 
