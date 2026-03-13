@@ -1,6 +1,6 @@
 /* Explicode — GitHub Dark theme for Docsify */
 
-/* ── Reset & base ── */
+/* Reset & base */
 *, *::before, *::after { box-sizing: border-box; }
 * { -webkit-font-smoothing: antialiased; -webkit-overflow-scrolling: touch; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-text-size-adjust: none; }
 html, body { height: 100%; }
@@ -12,19 +12,20 @@ div#app { font-size: 30px; font-weight: lighter; margin: 40vh auto; text-align: 
 div#app:empty::before { content: 'Loading...'; }
 .progress { background-color: #58a6ff; height: 2px; left: 0; position: fixed; right: 0; top: 0; transition: width 0.2s, opacity 0.4s; width: 0%; z-index: 999999; }
 
-/* ── Layout ── */
-main { display: block; position: relative; width: 100vw; height: 100%; z-index: 0; }
+main { display: block; position: relative; width: 100vw; height: 100%; }
 main.hidden { display: none; }
 body.sticky .sidebar, body.sticky .sidebar-toggle { position: fixed; }
 .content { padding-top: 60px; position: absolute; top: 0; right: 0; bottom: 0; left: 270px; transition: left 280ms cubic-bezier(0.4,0,0.2,1); }
 body.close .content { left: 0; }
 
-/* ── Sidebar ── */
 .sidebar { background-color: #161b22; border-right: 1px solid #30363d; color: #e6edf3; display: flex; flex-direction: column; overflow: hidden; position: absolute; top: 0; bottom: 0; left: 0; transition: transform 280ms cubic-bezier(0.4,0,0.2,1); width: 270px; z-index: 20; }
-.sidebar > h1 { margin: 0; font-size: 1.05rem; font-weight: 600; text-align: center; flex-shrink: 0; padding: 14px 16px 13px; border-bottom: 1px solid #30363d; }
+.sidebar > h1 { margin: 0; font-size: 1.05rem; font-weight: 600; text-align: center; flex-shrink: 0; padding: 14px 16px 13px; border-bottom: 1px solid #30363d; position: relative; display: flex; align-items: center; justify-content: center; }
 .sidebar > h1 a { color: #e6edf3; text-decoration: none; display: block; }
 
-/* ── Scrollable nav area ── */
+#xp-sidebar-close { display: none; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #8b949e; font-size: 14px; line-height: 1; padding: 4px 6px; border-radius: 4px; transition: color 0.15s, background 0.15s; }
+#xp-sidebar-close:hover { color: #e6edf3; background: rgba(177,186,196,0.08); }
+@media screen and (max-width: 599px) { #xp-sidebar-close { display: flex; align-items: center; justify-content: center; } }
+
 .xp-sidebar-scroll { flex: 1; overflow-y: auto; padding: 24px 0 8px; min-height: 0; }
 .xp-sidebar-scroll .sidebar-nav { margin-left: 8px; padding-bottom: 16px; }
 .xp-sidebar-scroll::-webkit-scrollbar { width: 4px; }
@@ -39,30 +40,22 @@ body.close .content { left: 0; }
 .sidebar li > p { margin-left: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6e7681; padding: 12px 8px 4px; }
 .sidebar ul li .section-link { font-size: 12px; color: #8b949e; }
 
-/* ── Sidebar footer ── */
 .xp-sidebar-footer { flex-shrink: 0; border-top: 1px solid #21262d; padding: 10px 16px; display: flex; align-items: center; justify-content: center; }
 .xp-sidebar-footer span, .xp-sidebar-footer { font-size: 11px; color: #484f58; white-space: nowrap; }
 .xp-sidebar-footer a { color: #6e7681; text-decoration: none; font-size: 11px; }
 .xp-sidebar-footer a:hover { color: #8b949e; text-decoration: underline; }
 
-/* ── Mobile nav button ── */
-#xp-mobile-btn { display: none; position: fixed; top: 14px; left: 14px; z-index: 31; width: 36px; height: 36px; background: none; border: none; cursor: pointer; align-items: center; justify-content: center; padding: 0; }
+#xp-mobile-btn { display: none; position: fixed; top: 14px; left: 14px; z-index: 18; width: 36px; height: 36px; background: none; border: none; cursor: pointer; align-items: center; justify-content: center; padding: 0; color: #484f58; transition: color 0.15s; }
+#xp-mobile-btn:hover { color: #8b949e; }
 @media screen and (max-width: 599px) { #xp-mobile-btn { display: flex; } }
 .xp-mb-bars { display: flex; flex-direction: column; gap: 5px; align-items: center; justify-content: center; }
-.xp-mb-bars span { display: block; width: 16px; height: 1.5px; background: #8b949e; border-radius: 2px; }
-.xp-mb-close { font-size: 14px; color: #8b949e; line-height: 1; }
-#xp-mobile-btn[data-open="false"] .xp-mb-bars { display: flex; }
-#xp-mobile-btn[data-open="false"] .xp-mb-close { display: none; }
-#xp-mobile-btn[data-open="true"] .xp-mb-bars { display: none; }
-#xp-mobile-btn[data-open="true"] .xp-mb-close { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.xp-mb-bars span { display: block; width: 16px; height: 1.5px; background: currentColor; border-radius: 2px; }
 
-/* ── Folder buttons ── */
 .xp-folder-btn { display: flex; align-items: center; gap: 6px; width: calc(100% - 16px); margin: 0 8px; background: none; border: none; cursor: pointer; color: #8b949e; font-size: 13px; font-weight: 600; padding: 5px 8px; border-radius: 6px; text-align: left; transition: background 0.1s, color 0.1s; }
 .xp-folder-btn:hover { background: rgba(177,186,196,0.08); color: #c9d1d9; }
 .xp-folder-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sidebar ul li ul { border-left: 1px solid #21262d; margin-left: 21px !important; padding-left: 0; }
 
-/* ── SVG icons via CSS masks ── */
 .xp-item-icon, .xp-folder-icon { display: inline-flex; flex-shrink: 0; width: 14px; height: 14px; background-color: currentColor; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; -webkit-mask-size: contain; mask-size: contain; }
 .xp-hash-icon { width: 12px; height: 12px; }
 .xp-home-icon  { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z'/%3E%3C/svg%3E"); }
@@ -71,7 +64,6 @@ body.close .content { left: 0; }
 .xp-folder-open   { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M.513 1.513A1.75 1.75 0 0 1 1.75 1h3.5c.55 0 1.07.26 1.4.7l.9 1.2a.25.25 0 0 0 .2.1H14.25c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25V2.75c0-.464.184-.91.513-1.237ZM1.75 2.5a.25.25 0 0 0-.25.25v.5h13V4.75a.25.25 0 0 0-.25-.25H7.75A1.75 1.75 0 0 1 6.35 3.8l-.9-1.2a.25.25 0 0 0-.2-.1H1.75Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M.513 1.513A1.75 1.75 0 0 1 1.75 1h3.5c.55 0 1.07.26 1.4.7l.9 1.2a.25.25 0 0 0 .2.1H14.25c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25V2.75c0-.464.184-.91.513-1.237ZM1.75 2.5a.25.25 0 0 0-.25.25v.5h13V4.75a.25.25 0 0 0-.25-.25H7.75A1.75 1.75 0 0 1 6.35 3.8l-.9-1.2a.25.25 0 0 0-.2-.1H1.75Z'/%3E%3C/svg%3E"); }
 .xp-folder-closed { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1Z'/%3E%3C/svg%3E"); }
 
-/* ── Nav link colors (dark) ── */
 .sidebar ul li a { color: #8b949e; font-size: 13px; padding: 5px 8px 5px 16px; margin-right: 8px; border-radius: 6px; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; transition: background 0.1s, color 0.1s; }
 .sidebar ul li a:hover { background: rgba(177,186,196,0.08); color: #e6edf3; }
 .sidebar ul li.active > a { background: rgba(56,139,253,0.1); color: #e6edf3; }
@@ -81,7 +73,6 @@ body.close .content { left: 0; }
 .xp-folder-btn .xp-folder-icon { color: #484f58; }
 .xp-folder-btn:hover .xp-folder-icon { color: #6e7681; }
 
-/* ── Sub-sidebar header links (dark) ── */
 .app-sub-sidebar { margin: 1px 0 3px 0 !important; padding-left: 0 !important; border-left: 1px solid #21262d !important; margin-left: 21px !important; }
 .app-sub-sidebar li > a { padding: 4px 8px !important; font-size: 12px !important; color: #6e7681 !important; display: flex !important; align-items: center !important; gap: 5px !important; }
 .app-sub-sidebar li > a:hover { color: #8b949e !important; background: rgba(177,186,196,0.06) !important; }
@@ -89,23 +80,18 @@ body.close .content { left: 0; }
 .app-sub-sidebar .xp-item-icon { color: #484f58; }
 .app-sub-sidebar li.active > a .xp-hash-icon { color: #388bfd; }
 
-/* ── Drag handle ── */
-.xp-drag { position: fixed; top: 0; left: 270px; width: 6px; height: 100%; cursor: col-resize; z-index: 25; background: rgba(110,118,129,0.2); }
+.xp-drag { position: fixed; top: 0; left: 270px; width: 6px; height: 100%; cursor: col-resize; z-index: 25; background: rgba(110,118,129,0.2); transition: opacity 280ms cubic-bezier(0.4,0,0.2,1); }
 .xp-drag:hover, .xp-drag:active { background: rgba(88,166,255,0.5); }
 
-/* ── Desktop toggle pill ── */
 #xp-toggle { position: fixed; top: 50%; left: 269px; transform: translateY(-50%); z-index: 26; width: 16px; height: 48px; background: #21262d; border: 1px solid #30363d; border-left: none; border-radius: 0 6px 6px 0; cursor: pointer; color: #8b949e; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.15s, color 0.15s; }
 #xp-toggle:hover { background: #30363d; color: #e6edf3; }
 @media screen and (max-width: 599px) { #xp-toggle { display: none !important; } }
 
-/* ── Hide docsify built-in toggle ── */
 .sidebar-toggle { display: none !important; }
 
-/* ── Close state ── */
 body.close .sidebar { transform: translateX(-100%); }
 body.close .content { left: 0; }
 
-/* ── Markdown content ── */
 .markdown-section { margin: 0 auto; max-width: 860px; padding: 32px 40px 60px; position: relative; }
 .markdown-section > * { box-sizing: border-box; font-size: inherit; }
 .markdown-section > :first-child { margin-top: 0 !important; }
@@ -144,7 +130,6 @@ body.close .content { left: 0; }
 .markdown-section p.warn { color: #e6edf3; border-left: 3px solid #388bfd; padding: 0 1rem; margin: 2em 0; }
 .markdown-section p.warn:before { content: "💡  Tip\A"; color: #388bfd; font-weight: 600; white-space: pre-wrap; line-height: 2.5; }
 
-/* ── Prism — One Dark Pro ── */
 .markdown-section pre { background-color: #1e2330 !important; border: 1px solid #2d3248; }
 .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #636d83; font-style: italic; }
 .token.namespace { opacity: 0.8; }
@@ -170,28 +155,14 @@ body.close .content { left: 0; }
 .token.important { color: #e06c75; }
 .token.entity { cursor: help; }
 
-/* ── Unrendered (non-clickable) sidebar items ── */
 .xp-unrendered { color: #3d444d; font-size: 13px; padding: 5px 8px 5px 16px; display: flex; align-items: center; gap: 6px; cursor: default; user-select: none; }
 .xp-unrendered::before { content: ''; display: inline-flex; flex-shrink: 0; width: 14px; height: 14px; background-color: #3d444d; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688Z'/%3E%3C/svg%3E"); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; -webkit-mask-size: contain; mask-size: contain; }
-
-/* ── GitHub source icon button ── */
 span.xp-unrendered:hover { color: #6e7681; cursor: pointer; }
 
-/* ── Title link ── */
-.sidebar > h1 { position: relative; display: flex; align-items: center; justify-content: center; }
-
-/* ── GitHub icon — fixed top-right, bare icon, all rendered pages ── */
 #xp-gh-page-btn { position: fixed; top: 14px; right: 16px; z-index: 18; display: flex; align-items: center; justify-content: center; color: #484f58; text-decoration: none !important; transition: color 0.15s, transform 0.15s; }
 #xp-gh-page-btn:hover { color: #8b949e; transform: scale(1.15); }
 #xp-gh-page-btn svg { width: 18px; height: 18px; display: block; }
-@media screen and (max-width: 599px) {
-  body:not(.close) #xp-gh-page-btn { display: none; }
-}
 
-/* ── Drag hidden when sidebar closed ── */
-body.close .xp-drag { opacity: 0 !important; pointer-events: none !important; }
-
-/* ── Responsive ── */
 @media screen and (max-width: 1100px) and (min-width: 600px) {
   .sidebar { width: 240px; }
   .content { left: 240px; }
