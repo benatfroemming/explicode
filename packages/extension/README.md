@@ -178,6 +178,7 @@ Explicode currently supports:
 - Dart
 - Objective-C
 - SQL
+- txt
 - Markdown
 
 Need support for another language? Open an issue or reach out.

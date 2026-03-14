@@ -172,6 +172,7 @@ function App() {
     const ext = filePath.split('.').pop()?.toLowerCase();
     const langMap: { [key: string]: string } = {
       md: 'markdown', mdx: 'markdown',
+      txt: 'txt',
       py: 'python',
       js: 'javascript', ts: 'typescript',
       jsx: 'javascriptreact', tsx: 'typescriptreact',
@@ -207,7 +208,7 @@ function App() {
             type="file"
             ref={fileInputRef}
             style={{ display: 'none' }}
-            accept=".md,.mdx,.py,.js,.ts,.jsx,.tsx,.java,.cpp,.cc,.cxx,.hpp,.hxx,.c,.h,.cu,.cuh,.cs,.rs,.go,.php,.swift,.kt,.kts,.dart,.sql"
+            accept=".md,.mdx,.txt,.py,.js,.ts,.jsx,.tsx,.java,.cpp,.cc,.cxx,.hpp,.hxx,.c,.h,.cu,.cuh,.cs,.rs,.go,.php,.swift,.kt,.kts,.dart,.sql"
             onChange={handleFileSelected}
           />
           {dropdownOpen && (

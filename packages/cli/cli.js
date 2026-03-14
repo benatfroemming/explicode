@@ -13,10 +13,12 @@
 
 const fs   = require('fs');
 const path = require('path');
+const ignore = require('ignore');
 
 // Language detection
 const EXT_TO_LANG = {
   md: 'markdown', mdx: 'markdown',
+  txt: 'txt',
   py: 'python',
   js: 'javascript', ts: 'typescript',
   jsx: 'javascriptreact', tsx: 'typescriptreact',
@@ -26,7 +28,7 @@ const EXT_TO_LANG = {
   cs: 'csharp',
   cu: 'cuda', cuh: 'cuda',
   rs: 'rust',
-  go: 'go',
+  go: 'go', 
   swift: 'swift',
   kt: 'kotlin', kts: 'kotlin',
   dart: 'dart',
@@ -53,14 +55,18 @@ const SUPPORTED_LANGUAGES = new Set([
   ...C_STYLE_LANGUAGES,
   'python',
   'markdown',
+  'txt',
 ]);
 
 // Directories to always skip when scanning
-const SKIP_DIRS = new Set([
-  'node_modules', '.git', '.svn', '.hg',
-  'dist', 'build', 'out', 'docs',
-  '.next', '.nuxt', '.cache', '.venv', 'venv', '__pycache__',
-]);
+function loadDocIgnore(cwd) {
+  const ignorePath = path.join(cwd, '.docignore');
+  const ig = ignore();
+  if (fs.existsSync(ignorePath)) {
+    ig.add(fs.readFileSync(ignorePath, 'utf8'));
+  }
+  return ig;
+}
 
 function getLanguage(filePath) {
   const ext = filePath.split('.').pop()?.toLowerCase() ?? '';
@@ -181,6 +187,7 @@ function parseCStyle(src) {
 
 function buildSegments(fileText, language) {
   if (language === 'markdown') return [{ type: 'doc', content: fileText }];
+  if (language === 'txt') return [{ type: 'doc', content: fileText }];
   if (language === 'python')   return parsePython(fileText);
   if (C_STYLE_LANGUAGES.has(language)) return parseCStyle(fileText);
   return [];
@@ -197,17 +204,17 @@ function segmentsToMarkdown(segments, language) {
     .join('\n\n');
 }
 
-// Recursively collect all files under a directory, skipping SKIP_DIRS and hidden entries
-function walkDir(dir, cwd) {
+// Recursively collect all files under a directory, skipping .docignore
+function walkDir(dir, cwd, ig) {
   const results = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.name.startsWith('.')) continue;
-    if (SKIP_DIRS.has(entry.name)) continue;
     const full = path.join(dir, entry.name);
+    const rel  = path.relative(cwd, full).split(path.sep).join('/');
+    if (ig.ignores(rel)) continue;
     if (entry.isDirectory()) {
-      results.push(...walkDir(full, cwd));
+      results.push(...walkDir(full, cwd, ig));
     } else if (entry.isFile()) {
-      results.push(path.relative(cwd, full).split(path.sep).join('/'));
+      results.push(rel);
     }
   }
   return results;
@@ -317,6 +324,8 @@ function build() {
   const cwd    = process.cwd();
   const title  = path.basename(cwd);
   const outDir = path.join(cwd, 'docs');
+  const ig = loadDocIgnore(cwd);
+  ig.add('docs/');
 
   fs.mkdirSync(outDir, { recursive: true });
 
@@ -339,8 +348,8 @@ function build() {
     console.log('No README.md found, writing placeholder docs/README.md');
   }
 
-  // Discover every file in the project (respects SKIP_DIRS)
-  const allFiles = walkDir(cwd, cwd);
+  // Discover every file in the project
+  const allFiles = walkDir(cwd, cwd, ig);
 
   // The relative path of the root README (for sidebar routing)
   const rootReadme = readmeSrc ? path.relative(cwd, readmeSrc).split(path.sep).join('/') : null;

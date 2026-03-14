@@ -46,6 +46,7 @@ export const SUPPORTED_LANGUAGES = new Set([
   ...C_STYLE_LANGUAGES,
   'python',   // """ """ or ''' '''
   'markdown', // rendered directly
+  'txt', // rendered directly
 ]);
 
 // Python parser — handles """ """ and ''' ''' docstrings
@@ -170,6 +171,7 @@ function mergeSegments(raw: Segment[]): Segment[] {
 // Public API
 export function buildSegments(fileText: string, language: string): Segment[] {
   if (language === 'markdown') return [{ type: 'doc', content: fileText }];
+  if (language === 'txt') return [{ type: 'doc', content: fileText }];
   if (language === 'python') return parsePython(fileText);
   if (C_STYLE_LANGUAGES.has(language)) return parseCStyle(fileText);
   return [];
@@ -202,7 +204,7 @@ const DocRenderer: React.FC<DocRendererProps> = ({ fileText, language, theme, re
           <p className="unsupported-title">Language not supported</p>
           <p className="unsupported-hint">
             Supported: Python, JavaScript, TypeScript, JSX, TSX, C, C++, CUDA, C#, Java, Go,
-            Rust, PHP, Swift, Kotlin, Scala, Dart, Objective-C, SQL, and Markdown.
+            Rust, PHP, Swift, Kotlin, Scala, Dart, Objective-C, SQL, txt, and Markdown.
           </p>
         </div>
       </div>
@@ -245,6 +247,9 @@ const DocRenderer: React.FC<DocRendererProps> = ({ fileText, language, theme, re
                     />
                   );
                 },
+                pre({ children }) {
+                  return <>{children}</>;
+                },
                 code({ className, children }) {
                   const match = /language-(\w+)/.exec(className ?? '');
                   if (match) {
@@ -252,7 +257,14 @@ const DocRenderer: React.FC<DocRendererProps> = ({ fileText, language, theme, re
                       <SyntaxHighlighter
                         language={match[1]}
                         style={syntaxStyle}
-                        customStyle={{ borderRadius: '6px', fontSize: '13px', margin: '12px 0' }}
+                        customStyle={{ 
+                          margin: '12px 0',
+                          borderRadius: '6px',
+                          border: `1px solid ${isDark ? '#30363d' : '#d0d7de'}`,
+                          fontSize: '13px',
+                          lineHeight: '1.5',
+                          borderLeft: `3px solid var(--gh-accent-emphasis)`,
+                        }}
                       >
                         {String(children).replace(/\n$/, '')}
                       </SyntaxHighlighter>

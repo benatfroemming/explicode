@@ -106,6 +106,7 @@ body.close .content { left: 0; }
 .markdown-section code, .markdown-section pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
 .markdown-section code { background-color: rgba(175,184,193,0.2); border-radius: 6px; padding: 0.2em 0.4em; font-size: 85%; color: #1f2328; }
 .markdown-section pre { background-color: #f6f8fa; border-radius: 6px; padding: 16px; overflow: auto; margin: 0 0 16px; line-height: 1.45; }
+.markdown-section pre[data-lang] { border-left: 3px solid #388bfd; }
 .markdown-section pre > code { background: transparent; padding: 0; font-size: 85%; color: #1f2328; border-radius: 0; white-space: pre; }
 .markdown-section table { border-collapse: collapse; border-spacing: 0; display: block; margin-bottom: 16px; overflow: auto; width: 100%; }
 .markdown-section th { background-color: #f6f8fa; border: 1px solid #d0d7de; font-weight: 600; padding: 6px 13px; }

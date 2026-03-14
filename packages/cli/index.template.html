@@ -433,6 +433,15 @@
       subMaxLevel: 2,
       auto2top: true,
       plugins: [explicodePlugin, titleLockPlugin],
+      markdown: {
+        renderer: {
+          code(code, lang) {
+            return Prism.highlight
+              ? `<pre data-lang="${lang}"><code class="lang-${lang}">${Prism.highlight(code, Prism.languages[lang] || Prism.languages.plaintext, lang)}</code></pre>`
+              : `<pre data-lang="${lang}"><code class="lang-${lang}">${code}</code></pre>`;
+          }
+        }
+      },
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>

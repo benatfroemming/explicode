@@ -32,7 +32,29 @@ npx explicode build --dark   # dark theme
 - Writes an `index.html` ready for [Docsify](https://docsify.js.org/#/) + [GitHub Pages](https://docs.github.com/pages)
 - Adds "View on GitHub" source links if a GitHub remote is detected
 
-**Skipped directories:** `node_modules`, `.git`, `dist`, `build`, `out`, `docs`, `.next`, `.nuxt`, `.cache`, `.venv`, `venv`, `__pycache__`
+### Skipped directories
+
+By default, Explicode skips nothing, you control what gets scanned via a `.docignore` file in your project root.
+
+`.docignore` works exactly like `.gitignore`: one pattern per line, supports globs, directory-only patterns, and negation.
+
+```gitignore
+# Directories
+node_modules/
+dist/
+build/
+
+# Specific files
+secrets.txt
+config/local.json
+
+# File patterns
+*.log
+*.lock
+
+# Negation — include something otherwise ignored
+!important.log
+```
 
 ## GitHub Pages
 

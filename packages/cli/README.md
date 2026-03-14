@@ -16,7 +16,7 @@ Explicode lets you write Markdown directly inside your source code comments. The
 - **C-style languages** — Block comments (`/* ... */`) are treated as prose, while the rest of the code is rendered as code blocks.
 - **Markdown files** — Passed through directly without changes.
 
-**Supported Languages:** Python, JavaScript, TypeScript, JSX, TSX, Java, C, C++, C#, CUDA, Rust, Go, Swift, Kotlin, Scala, Dart, PHP, Objective-C, SQL, Markdown
+**Supported Languages:** Python, JavaScript, TypeScript, JSX, TSX, Java, C, C++, C#, CUDA, Rust, Go, Swift, Kotlin, Scala, Dart, PHP, Objective-C, SQL, Markdown, txt
 
 ## Commands
 
@@ -46,7 +46,31 @@ npx explicode build --dark   # dark theme
 - Writes an `index.html` ready for [Docsify](https://docsify.js.org/#/) + [GitHub Pages](https://docs.github.com/pages)
 - Adds "View on GitHub" source links if a GitHub remote is detected
 
-**Skipped directories:** `node_modules`, `.git`, `dist`, `build`, `out`, `docs`, `.next`, `.nuxt`, `.cache`, `.venv`, `venv`, `__pycache__`
+### Skipped directories
+
+By default, Explicode skips nothing, you control what gets scanned via a `.docignore` file in your project root.
+
+`.docignore` works exactly like `.gitignore`: one pattern per line, supports globs, directory-only patterns, and negation.
+
+```gitignore
+# Directories
+node_modules/
+dist/
+build/
+
+# Specific files
+secrets.txt
+config/local.json
+
+# File patterns
+*.log
+*.lock
+
+# Negation — include something otherwise ignored
+!important.log
+```
+
+> **Note:** `docs/` is always excluded automatically since it's Explicode's output folder.
 
 ## GitHub Pages
 

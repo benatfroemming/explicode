@@ -117,6 +117,7 @@ body.close .content { left: 0; }
 .markdown-section code, .markdown-section pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; }
 .markdown-section code { background-color: rgba(110,118,129,0.4); border-radius: 6px; padding: 0.2em 0.4em; font-size: 85%; color: #e6edf3; }
 .markdown-section pre { background-color: #161b22; border-radius: 6px; padding: 16px; overflow: auto; margin: 0 0 16px; line-height: 1.45; }
+.markdown-section pre[data-lang] { border-left: 3px solid #388bfd; }
 .markdown-section pre > code { background: transparent; padding: 0; font-size: 85%; color: #e6edf3; border-radius: 0; white-space: pre; }
 .markdown-section table { border-collapse: collapse; border-spacing: 0; display: block; margin-bottom: 16px; overflow: auto; width: 100%; }
 .markdown-section th { background-color: #161b22; border: 1px solid #30363d; font-weight: 600; padding: 6px 13px; color: #e6edf3; }
