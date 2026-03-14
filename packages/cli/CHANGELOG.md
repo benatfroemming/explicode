@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.4] - 2026-03-14
+
+### Changed
+- Fix the nested code block for sample code in md 2.0
+
 ## [1.0.3] - 2026-03-14
 
 ### Added

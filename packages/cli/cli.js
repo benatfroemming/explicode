@@ -199,7 +199,7 @@ function segmentsToMarkdown(segments, language) {
     .map(seg =>
       seg.type === 'doc'
         ? seg.content
-        : '```' + prismLang + '\n' + seg.content + '\n```'
+        : '```' + prismLang + ' xp-source\n' + seg.content + '\n```'
     )
     .join('\n\n');
 }
