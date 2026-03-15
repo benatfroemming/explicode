@@ -6,12 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="ghmd.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
-  <style>
-    /* Closed sidebar must never intercept touches on mobile */
-    @media screen and (max-width: 599px) {
-      body.close .sidebar { pointer-events: none !important; }
-    }
-  </style>
 </head>
 <body>
   <div id="app"></div>
@@ -25,25 +19,17 @@
       var TRANSITION = '280ms cubic-bezier(0.4,0,0.2,1)';
       var currentFilePath = 'README.md';
 
-      // These are set once in mounted and reused everywhere.
       var sidebar, toggle, mobileBtn, drag;
-      // Source of truth for sidebar open/closed — never read body.close for logic.
       var sidebarOpen = true;
 
-      function isMobile() { return window.innerWidth < 600; }
+      // Track which file lis have their heading panel open.
+      // Key = normalized href string, value = true/false.
+      var headingPanelOpen = {};
 
-      function updateDragVisibility(open) {
-        if (isMobile()) {
-          drag.style.opacity = '0';
-          drag.style.pointerEvents = 'none';
-        } else if (open) {
-          drag.style.opacity = '1';
-          drag.style.pointerEvents = '';
-        } else {
-          drag.style.opacity = '0';
-          drag.style.pointerEvents = 'none';
-        }
-      }
+      // Track the active heading id so we can highlight it.
+      var activeHeadingId = '';
+
+      function isMobile() { return window.innerWidth < 600; }
 
       function syncPositions(w, animate) {
         var content = document.querySelector('.content');
@@ -61,7 +47,6 @@
         var mobile = isMobile();
         var dur = animate ? TRANSITION : 'none';
         var content = document.querySelector('.content');
-
         if (open) {
           document.body.classList.remove('close');
           toggle.innerHTML = '&#x2039;';
@@ -72,11 +57,8 @@
             if (content) content.style.left = '';
           } else {
             var w = parseInt(sidebar.style.width) || sidebar.offsetWidth || 270;
-            // Animate drag left from 0 → w in sync with sidebar sliding in
             drag.style.transition = animate ? 'left ' + TRANSITION + ', opacity ' + TRANSITION : 'none';
-            drag.style.left = w + 'px';
-            drag.style.opacity = '1';
-            drag.style.pointerEvents = '';
+            drag.style.left = w + 'px'; drag.style.opacity = '1'; drag.style.pointerEvents = '';
             syncPositions(w, animate);
           }
         } else {
@@ -89,19 +71,133 @@
             if (content) content.style.left = '';
           } else {
             sidebar.style.transition = 'transform ' + dur;
-            toggle.style.transition = 'left ' + dur;
-            toggle.style.left = '0px';
+            toggle.style.transition = 'left ' + dur; toggle.style.left = '0px';
             if (content) { content.style.transition = 'left ' + dur; content.style.left = '0'; }
-            // Animate drag left from w → 0 in sync with sidebar sliding out
             drag.style.transition = animate ? 'left ' + TRANSITION + ', opacity ' + TRANSITION : 'none';
-            drag.style.left = '0px';
-            drag.style.opacity = '0';
-            drag.style.pointerEvents = 'none';
+            drag.style.left = '0px'; drag.style.opacity = '0'; drag.style.pointerEvents = 'none';
           }
         }
       }
 
+      // Parse headings out of the rendered markdown content area.
+      // Returns [{id, text, level}, ...] in document order.
+      function getPageHeadings() {
+        var content = document.querySelector('.markdown-section');
+        if (!content) return [];
+        var headings = [];
+        content.querySelectorAll('h1, h2, h3, h4').forEach(function(h) {
+          var id = h.id || h.getAttribute('id') || '';
+          if (!id) {
+            // Docsify sets id on a child <a> sometimes
+            var a = h.querySelector('a[id]');
+            if (a) id = a.id;
+          }
+          var text = h.textContent.trim();
+          if (id && text) {
+            headings.push({ id: id, text: text, level: parseInt(h.tagName[1]) });
+          }
+        });
+        return headings;
+      }
+
+      // Build and inject a heading panel below a file li.
+      // If panel already exists (xp-headings div), replace its contents.
+      function buildHeadingPanel(fileLi, headings, fileKey) {
+        // Remove old panel if present
+        var old = fileLi.querySelector('.xp-headings');
+        if (old) old.remove();
+
+        if (!headings.length) return;
+
+        var panel = document.createElement('div');
+        panel.className = 'xp-headings' + (headingPanelOpen[fileKey] ? ' open' : '');
+
+        headings.forEach(function(h) {
+          var item = document.createElement('a');
+          item.className = 'xp-heading-item' + (h.id === activeHeadingId ? ' active' : '');
+          item.href = 'javascript:void(0)';
+
+          var hash = document.createElement('span');
+          hash.className = 'xp-heading-hash';
+          hash.textContent = '#'.repeat(h.level);
+
+          var label = document.createElement('span');
+          label.className = 'xp-heading-label';
+          label.textContent = h.text;
+
+          item.appendChild(hash);
+          item.appendChild(label);
+
+          item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Scroll to heading in content area
+            var target = document.getElementById(h.id);
+            if (!target) {
+              // fallback: find by matching text
+              document.querySelectorAll('.markdown-section h1,h2,h3,h4').forEach(function(el) {
+                if (!target && el.textContent.trim() === h.text) target = el;
+              });
+            }
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              // Update URL hash without triggering Docsify navigation
+              var newHash = window.location.hash.replace(/\?id=.*$/, '') + '?id=' + h.id;
+              history.replaceState(null, '', newHash);
+            }
+            // Update active heading highlight
+            activeHeadingId = h.id;
+            panel.querySelectorAll('.xp-heading-item').forEach(function(el) {
+              el.classList.toggle('active', el === item);
+            });
+            var hashEl = item.querySelector('.xp-heading-hash');
+            panel.querySelectorAll('.xp-heading-hash').forEach(function(el) {
+              el.style.color = '';
+            });
+            // Keep file li active — never let heading click affect it
+            fileLi.classList.add('active');
+            // Close sidebar on mobile just like file link clicks do
+            if (isMobile()) setOpen(false, true);
+          });
+
+          panel.appendChild(item);
+        });
+
+        // Insert panel after the anchor (before any other children like the toggle button)
+        var anchor = fileLi.querySelector(':scope > a');
+        if (anchor && anchor.nextSibling) {
+          fileLi.insertBefore(panel, anchor.nextSibling);
+        } else {
+          fileLi.appendChild(panel);
+        }
+      }
+
+      // Ensure chevron button exists on a file li that has headings.
+      function ensureChevron(fileLi, fileKey) {
+        if (fileLi.querySelector('.xp-chevron')) return;
+        var chevron = document.createElement('button');
+        chevron.className = 'xp-chevron' + (headingPanelOpen[fileKey] ? ' open' : '');
+        chevron.setAttribute('aria-label', 'Toggle headings');
+        chevron.innerHTML = '<svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 1l3 3-3 3"/></svg>';
+
+        chevron.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var panel = fileLi.querySelector('.xp-headings');
+          if (!panel) return;
+          var isOpen = panel.classList.contains('open');
+          panel.classList.toggle('open', !isOpen);
+          chevron.classList.toggle('open', !isOpen);
+          headingPanelOpen[fileKey] = !isOpen;
+        });
+
+        fileLi.appendChild(chevron);
+      }
+
       hook.beforeEach(function(content, next) {
+        // Reset active heading and collapse all heading panels on page navigation
+        activeHeadingId = '';
+        headingPanelOpen = {};
         var hash = window.location.hash.replace(/^#\/?/, '').replace(/\?.*$/, '');
         if (!hash) {
           currentFilePath = 'README.md';
@@ -151,8 +247,7 @@
         mobileBtn = document.createElement('button');
         mobileBtn.id = 'xp-mobile-btn';
         mobileBtn.setAttribute('aria-label', 'Open sidebar');
-        mobileBtn.innerHTML =
-          '<span class="xp-mb-bars"><span></span><span></span><span></span></span>';
+        mobileBtn.innerHTML = '<span class="xp-mb-bars"><span></span><span></span><span></span></span>';
         document.body.appendChild(mobileBtn);
 
         var closeBtn = document.createElement('button');
@@ -160,37 +255,26 @@
         closeBtn.setAttribute('aria-label', 'Close sidebar');
         closeBtn.innerHTML = '&#x2715;';
         var h1 = sidebar.querySelector('h1');
-        if (h1) {
-          h1.insertBefore(closeBtn, h1.firstChild);
-        } else {
-          sidebar.insertBefore(closeBtn, sidebar.firstChild);
-        }
+        if (h1) { h1.insertBefore(closeBtn, h1.firstChild); }
+        else { sidebar.insertBefore(closeBtn, sidebar.firstChild); }
 
-        closeBtn.addEventListener('click', function() {
-          setOpen(false, true);
-        });
+        closeBtn.addEventListener('click', function() { setOpen(false, true); });
 
         drag = document.createElement('div');
         drag.className = 'xp-drag';
         document.body.appendChild(drag);
 
-        toggle.addEventListener('click', function() {
-          setOpen(!sidebarOpen, true);
-        });
-        mobileBtn.addEventListener('click', function() {
-          setOpen(!sidebarOpen, true);
-        });
+        toggle.addEventListener('click', function() { setOpen(!sidebarOpen, true); });
+        mobileBtn.addEventListener('click', function() { setOpen(!sidebarOpen, true); });
 
-        // Single delegated listener for nav link taps/clicks closing the sidebar.
         sidebar.addEventListener('click', function(e) {
           if (!isMobile()) return;
           var a = e.target.closest('a');
-          if (a && sidebar.contains(a) && !a.closest('.xp-sidebar-footer')) {
+          if (a && sidebar.contains(a) && !a.closest('.xp-sidebar-footer') && !a.closest('.xp-headings')) {
             setOpen(false, true);
           }
         });
 
-        // Resize handler
         var lastMobile = isMobile();
         window.addEventListener('resize', function() {
           var nowMobile = isMobile();
@@ -204,78 +288,52 @@
               sidebar.style.transform = sidebarOpen ? 'translateX(0)' : 'translateX(-100%)';
               sidebar.style.pointerEvents = sidebarOpen ? '' : 'none';
             } else {
-              sidebar.style.transform = '';
-              sidebar.style.pointerEvents = '';
-              if (sidebarOpen) {
-                syncPositions(w, false);
-              } else {
+              sidebar.style.transform = ''; sidebar.style.pointerEvents = '';
+              if (sidebarOpen) { syncPositions(w, false); }
+              else {
                 var content = document.querySelector('.content');
                 if (content) content.style.left = '0';
                 toggle.style.left = '0px';
               }
             }
-          } else if (!nowMobile && sidebarOpen) {
-            syncPositions(w, false);
-          }
+          } else if (!nowMobile && sidebarOpen) { syncPositions(w, false); }
           drag.style.transition = 'none';
-          if (isMobile()) {
-            drag.style.opacity = '0';
-            drag.style.pointerEvents = 'none';
-          } else if (sidebarOpen) {
-            drag.style.opacity = '1';
-            drag.style.pointerEvents = '';
-          } else {
-            drag.style.left = '0px';
-            drag.style.opacity = '0';
-            drag.style.pointerEvents = 'none';
-          }
+          if (isMobile()) { drag.style.opacity = '0'; drag.style.pointerEvents = 'none'; }
+          else if (sidebarOpen) { drag.style.opacity = '1'; drag.style.pointerEvents = ''; }
+          else { drag.style.left = '0px'; drag.style.opacity = '0'; drag.style.pointerEvents = 'none'; }
         });
 
-        // Initial state
         if (isMobile()) {
-          lastMobile = true;
-          sidebarOpen = false;
-          sidebar.style.transition = 'none';
-          sidebar.style.transform = 'translateX(-100%)';
-          sidebar.style.pointerEvents = 'none';
-          document.body.classList.add('close');
+          lastMobile = true; sidebarOpen = false;
+          sidebar.style.transition = 'none'; sidebar.style.transform = 'translateX(-100%)';
+          sidebar.style.pointerEvents = 'none'; document.body.classList.add('close');
           var content = document.querySelector('.content');
           if (content) content.style.left = '';
-          drag.style.transition = 'none';
-          drag.style.opacity = '0';
-          drag.style.pointerEvents = 'none';
+          drag.style.transition = 'none'; drag.style.opacity = '0'; drag.style.pointerEvents = 'none';
         } else {
           sidebarOpen = true;
           syncPositions(parseInt(sidebar.style.width) || sidebar.offsetWidth || 270, false);
-          drag.style.transition = 'none';
-          drag.style.opacity = '1';
-          drag.style.pointerEvents = '';
+          drag.style.transition = 'none'; drag.style.opacity = '1'; drag.style.pointerEvents = '';
         }
 
-        // Drag to resize (desktop only)
         drag.addEventListener('mousedown', function(e) {
           e.preventDefault();
           var startX = e.clientX;
           var startW = parseInt(sidebar.style.width) || sidebar.offsetWidth || 270;
-          document.body.style.userSelect = 'none';
-          document.body.style.cursor = 'col-resize';
-          sidebar.style.transition = 'none';
-          toggle.style.transition = 'none';
+          document.body.style.userSelect = 'none'; document.body.style.cursor = 'col-resize';
+          sidebar.style.transition = 'none'; toggle.style.transition = 'none';
           var content = document.querySelector('.content');
           if (content) content.style.transition = 'none';
           drag.style.transition = 'none';
-
           function onMove(e) {
-            var w = Math.max(180, Math.min(600, startW + e.clientX - startX));
+            var w = Math.max(180, Math.min(window.innerWidth - 100, startW + e.clientX - startX));
             sidebar.style.width = w + 'px';
-            var content = document.querySelector('.content');
-            if (content) content.style.left = w + 'px';
-            drag.style.left = w + 'px';
-            toggle.style.left = (w - 1) + 'px';
+            var c = document.querySelector('.content');
+            if (c) c.style.left = w + 'px';
+            drag.style.left = w + 'px'; toggle.style.left = (w - 1) + 'px';
           }
           function onUp() {
-            document.body.style.userSelect = '';
-            document.body.style.cursor = '';
+            document.body.style.userSelect = ''; document.body.style.cursor = '';
             document.removeEventListener('mousemove', onMove);
             document.removeEventListener('mouseup', onUp);
           }
@@ -285,30 +343,27 @@
       });
 
       hook.doneEach(function() {
+        Prism.highlightAll();
+      });
+
+      hook.doneEach(function() {
         var sb = document.querySelector('.sidebar');
 
         if (repoUrl) {
           var h1 = sb.querySelector('h1');
-          if (h1) {
-            var titleA = h1.querySelector('a');
-            if (titleA) titleA.target = '_blank';
-          }
+          if (h1) { var ta = h1.querySelector('a'); if (ta) ta.target = '_blank'; }
         }
 
-        // Ensure scroll wrapper exists
         if (!sb.querySelector('.xp-sidebar-scroll')) {
           var scrollWrap = document.createElement('div');
           scrollWrap.className = 'xp-sidebar-scroll';
           var footer = sb.querySelector('.xp-sidebar-footer');
           Array.from(sb.childNodes).forEach(function(n) {
-            if (!n.classList || !n.classList.contains('xp-sidebar-footer')) {
-              scrollWrap.appendChild(n);
-            }
+            if (!n.classList || !n.classList.contains('xp-sidebar-footer')) scrollWrap.appendChild(n);
           });
           sb.insertBefore(scrollWrap, footer || null);
         }
 
-        // Re-sync desktop drag/toggle positions
         if (!isMobile() && drag && toggle) {
           var w = parseInt(sb.style.width) || sb.offsetWidth || 270;
           drag.style.transition = 'none';
@@ -318,7 +373,6 @@
           toggle.style.left = sidebarOpen ? (w - 1) + 'px' : '0px';
         }
 
-        // GitHub source button, recreated on each navigation to update href
         (function() {
           var existing = document.getElementById('xp-gh-page-btn');
           if (existing) existing.remove();
@@ -326,10 +380,8 @@
           var btn = document.createElement('a');
           btn.id = 'xp-gh-page-btn';
           btn.href = githubBase + '/' + currentFilePath;
-          btn.target = '_blank';
-          btn.rel = 'noopener noreferrer';
-          btn.setAttribute('aria-label', 'View on GitHub');
-          btn.title = 'View on GitHub';
+          btn.target = '_blank'; btn.rel = 'noopener noreferrer';
+          btn.setAttribute('aria-label', 'View on GitHub'); btn.title = 'View on GitHub';
           btn.innerHTML = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
           document.body.insertBefore(btn, mobileBtn || null);
         })();
@@ -337,13 +389,12 @@
         var nav = sb.querySelector('.sidebar-nav');
         if (!nav) return;
 
+        // Kill Docsify's own sub-sidebar entirely — we replace it with our system.
+        nav.querySelectorAll('.app-sub-sidebar').forEach(function(el) { el.remove(); });
+
         // Reset Docsify collapse state
-        nav.querySelectorAll('li').forEach(function(li) {
-          li.classList.remove('collapse');
-        });
-        nav.querySelectorAll('li > ul').forEach(function(ul) {
-          ul.style.display = '';
-        });
+        nav.querySelectorAll('li').forEach(function(li) { li.classList.remove('collapse'); });
+        nav.querySelectorAll('li > ul').forEach(function(ul) { ul.style.display = ''; });
 
         // Folder buttons
         nav.querySelectorAll('li').forEach(function(li) {
@@ -352,61 +403,123 @@
           if (!labelEl) return;
           var subUl = li.querySelector(':scope > ul');
           if (!subUl) return;
-
           var folderName = labelEl.textContent.trim();
           li.dataset.xpFolder = '1';
           subUl.setAttribute('data-xp-folder-ul', '1');
-
-          var btn = document.createElement('button');
-          btn.className = 'xp-folder-btn';
+          var folderBtn = document.createElement('button');
+          folderBtn.className = 'xp-folder-btn';
           var iconSpan = document.createElement('span');
           var labelSpan = document.createElement('span');
           labelSpan.className = 'xp-folder-label';
           labelSpan.textContent = folderName;
-          btn.appendChild(iconSpan);
-          btn.appendChild(labelSpan);
-
+          folderBtn.appendChild(iconSpan); folderBtn.appendChild(labelSpan);
           var wrapper = labelEl.closest('p') || labelEl;
-          li.insertBefore(btn, wrapper);
-          wrapper.remove();
-
-          // add to closedFolders so it starts closed
-          if (!seenFolders.has(folderName)) {
-            seenFolders.add(folderName);
-            closedFolders.add(folderName);
-          }
+          li.insertBefore(folderBtn, wrapper); wrapper.remove();
+          if (!seenFolders.has(folderName)) { seenFolders.add(folderName); closedFolders.add(folderName); }
           var folderOpen = !closedFolders.has(folderName);
-          btn.setAttribute('data-open', folderOpen ? 'true' : 'false');
+          folderBtn.setAttribute('data-open', folderOpen ? 'true' : 'false');
           iconSpan.className = 'xp-folder-icon ' + (folderOpen ? 'xp-folder-open' : 'xp-folder-closed');
           subUl.style.display = folderOpen ? '' : 'none';
-
-          btn.addEventListener('click', function() {
-            var nowOpen = btn.getAttribute('data-open') !== 'true';
-            btn.setAttribute('data-open', nowOpen ? 'true' : 'false');
+          folderBtn.addEventListener('click', function() {
+            var nowOpen = folderBtn.getAttribute('data-open') !== 'true';
+            folderBtn.setAttribute('data-open', nowOpen ? 'true' : 'false');
             iconSpan.className = 'xp-folder-icon ' + (nowOpen ? 'xp-folder-open' : 'xp-folder-closed');
             subUl.style.display = nowOpen ? '' : 'none';
-            if (nowOpen) closedFolders.delete(folderName);
-            else closedFolders.add(folderName);
+            if (nowOpen) closedFolders.delete(folderName); else closedFolders.add(folderName);
           });
         });
 
         // File icons
         nav.querySelectorAll('a').forEach(function(a) {
           if (a.dataset.xpIcon) return;
-          if (a.closest('.app-sub-sidebar')) return;
           a.dataset.xpIcon = '1';
           var icon = document.createElement('span');
           icon.className = 'xp-item-icon xp-file-icon';
           a.insertBefore(icon, a.firstChild);
         });
 
-        nav.querySelectorAll('.app-sub-sidebar a').forEach(function(a) {
-          if (a.dataset.xpIcon) return;
-          a.dataset.xpIcon = '1';
-          var icon = document.createElement('span');
-          icon.className = 'xp-item-icon xp-hash-icon';
-          a.insertBefore(icon, a.firstChild);
+        // ── Active file detection ────────────────────────────────────────────
+        // Parse current URL: file path and heading fragment.
+        var rawHash = window.location.hash;
+        var urlFilePath = rawHash.replace(/^#\/?/, '').replace(/\?.*$/, '');
+        var urlFragment = (rawHash.match(/[?&]id=([^&]*)/) || [])[1] || '';
+        activeHeadingId = urlFragment;
+
+        // Find the active file li by href matching.
+        var currentFileLi = null;
+        nav.querySelectorAll('a').forEach(function(a) {
+          if (currentFileLi) return;
+          var href = (a.getAttribute('href') || '').replace(/^#\/?/, '').replace(/\?.*$/, '');
+          if (href === urlFilePath || (!urlFilePath && (!href || href === 'README' || href === 'README.md'))) {
+            currentFileLi = a.closest('li');
+          }
         });
+        // Fallback to whatever Docsify marked active.
+        if (!currentFileLi) {
+          currentFileLi = nav.querySelector('li.active');
+        }
+
+        // Force active onto the file li, remove from all others.
+        nav.querySelectorAll('li').forEach(function(li) { li.classList.remove('active'); });
+        if (currentFileLi) currentFileLi.classList.add('active');
+
+        // ── Heading panels ───────────────────────────────────────────────────
+        // For the active file li: read headings from the rendered page and build panel.
+        // For all others: clear any existing panel (file changed).
+        nav.querySelectorAll('a').forEach(function(a) {
+          var li = a.closest('li');
+          if (!li || li.dataset.xpFolder) return;
+          // Skip lis that are inside a folder's sub-ul but aren't file entries
+          // (i.e. they have no direct anchor child pointing to a file).
+          var href = a.getAttribute('href') || '';
+          if (!href) return;
+          var fileKey = href.replace(/^#\/?/, '').replace(/\?.*$/, '');
+
+          if (li === currentFileLi) {
+            // Build heading panel from live DOM.
+            var headings = getPageHeadings();
+            if (headings.length) {
+              buildHeadingPanel(li, headings, fileKey);
+              ensureChevron(li, fileKey);
+            } else {
+              // No headings — remove panel and chevron if present.
+              var p = li.querySelector('.xp-headings'); if (p) p.remove();
+              var c = li.querySelector('.xp-chevron'); if (c) c.remove();
+            }
+          } else {
+            // Not the active file — remove any stale panel/chevron.
+            var p = li.querySelector('.xp-headings'); if (p) p.remove();
+            var c = li.querySelector('.xp-chevron'); if (c) c.remove();
+          }
+        });
+
+        // Auto-expand folder containing the active link.
+        if (currentFileLi) {
+          var parentUl = currentFileLi.closest('[data-xp-folder-ul]');
+          while (parentUl) {
+            var fb = parentUl.previousElementSibling;
+            if (fb && fb.classList.contains('xp-folder-btn')) {
+              fb.setAttribute('data-open', 'true');
+              fb.querySelector('.xp-folder-icon').className = 'xp-folder-icon xp-folder-open';
+              parentUl.style.display = '';
+              closedFolders.delete(fb.querySelector('.xp-folder-label').textContent.trim());
+            }
+            parentUl = parentUl.parentElement ? parentUl.parentElement.closest('[data-xp-folder-ul]') : null;
+          }
+        }
+
+        // Scroll active item into view in sidebar.
+        if (currentFileLi) {
+          var scrollEl = sb.querySelector('.xp-sidebar-scroll');
+          if (scrollEl) {
+            var liTop = currentFileLi.offsetTop;
+            var liH = currentFileLi.offsetHeight;
+            var scrollH = scrollEl.clientHeight;
+            if (liTop < scrollEl.scrollTop || liTop + liH > scrollEl.scrollTop + scrollH) {
+              scrollEl.scrollTop = liTop - scrollH / 3;
+            }
+          }
+        }
 
         // Unrendered file GitHub links
         if (githubBase) {
@@ -430,7 +543,8 @@
       nameLink: repoUrl || '/',
       repo: '',
       loadSidebar: true,
-      subMaxLevel: 2,
+      subMaxLevel: 0,
+      relativePath: true,
       auto2top: true,
       plugins: [explicodePlugin, titleLockPlugin],
       markdown: {
@@ -438,36 +552,19 @@
           code(code, lang) {
             const isSource = lang?.includes('xp-source');
             const realLang = lang?.replace('xp-source', '').trim() || '';
-            const hasLang = realLang && Prism.languages[realLang];
-            const highlighted = hasLang
-              ? Prism.highlight(code, Prism.languages[realLang], realLang)
-              : (code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));
-            const attrs = hasLang ? ` data-lang="${realLang}"` : '';
-            const cls = isSource ? ` class="xp-source-block"` : '';
-            return `<pre${attrs}${cls}><code class="lang-${realLang}">${highlighted}</code></pre>`;
+            const escaped = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            const attrs = realLang ? ` data-lang="${realLang}"` : '';
+            const cls = isSource ? ' class="xp-source-block"' : '';
+            return `<pre${attrs}${cls}><code class="language-${realLang}">${escaped}</code></pre>`;
           }
         }
       },
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-jsx.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-tsx.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-c.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-cpp.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-csharp.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-rust.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-scala.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-dart.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-php.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script>Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1/components/';</script>
   <script src="https://cdn.jsdelivr.net/npm/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-katex@1/dist/docsify-katex.js"></script>
 </body>

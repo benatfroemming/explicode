@@ -24,7 +24,7 @@ body.close .content { left: 0; }
 #xp-sidebar-close:hover { color: #1f2328; background: rgba(208,215,222,0.32); }
 @media screen and (max-width: 599px) { #xp-sidebar-close { display: flex; align-items: center; justify-content: center; } }
 
-.xp-sidebar-scroll { flex: 1; overflow-y: auto; padding: 24px 0 8px; min-height: 0; }
+.xp-sidebar-scroll { flex: 1; overflow-y: scroll; padding: 24px 0 8px; min-height: 0; padding-right: 4px; }
 .xp-sidebar-scroll .sidebar-nav { margin-left: 8px; padding-bottom: 16px; }
 .xp-sidebar-scroll::-webkit-scrollbar { width: 4px; }
 .xp-sidebar-scroll::-webkit-scrollbar-thumb { background: transparent; border-radius: 4px; }
@@ -59,6 +59,8 @@ body.close .content { left: 0; }
 .xp-hash-icon  { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.368 1.01a.75.75 0 0 1 .623.859L6.57 4h3.98l.46-2.868a.75.75 0 0 1 1.48.237L12.07 4h2.18a.75.75 0 0 1 0 1.5h-2.42l-.64 4h2.31a.75.75 0 0 1 0 1.5h-2.55l-.46 2.869a.75.75 0 0 1-1.48-.237l.42-2.632H5.45l-.46 2.869a.75.75 0 0 1-1.48-.237L3.93 11H1.75a.75.75 0 0 1 0-1.5h2.42l.64-4H2.5a.75.75 0 0 1 0-1.5h2.55l.46-2.868a.75.75 0 0 1 .858-.622ZM9.309 9.5l.64-4H5.969l-.64 4Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.368 1.01a.75.75 0 0 1 .623.859L6.57 4h3.98l.46-2.868a.75.75 0 0 1 1.48.237L12.07 4h2.18a.75.75 0 0 1 0 1.5h-2.42l-.64 4h2.31a.75.75 0 0 1 0 1.5h-2.55l-.46 2.869a.75.75 0 0 1-1.48-.237l.42-2.632H5.45l-.46 2.869a.75.75 0 0 1-1.48-.237L3.93 11H1.75a.75.75 0 0 1 0-1.5h2.42l.64-4H2.5a.75.75 0 0 1 0-1.5h2.55l.46-2.868a.75.75 0 0 1 .858-.622ZM9.309 9.5l.64-4H5.969l-.64 4Z'/%3E%3C/svg%3E"); }
 .xp-folder-open   { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M.513 1.513A1.75 1.75 0 0 1 1.75 1h3.5c.55 0 1.07.26 1.4.7l.9 1.2a.25.25 0 0 0 .2.1H14.25c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25V2.75c0-.464.184-.91.513-1.237ZM1.75 2.5a.25.25 0 0 0-.25.25v.5h13V4.75a.25.25 0 0 0-.25-.25H7.75A1.75 1.75 0 0 1 6.35 3.8l-.9-1.2a.25.25 0 0 0-.2-.1H1.75Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M.513 1.513A1.75 1.75 0 0 1 1.75 1h3.5c.55 0 1.07.26 1.4.7l.9 1.2a.25.25 0 0 0 .2.1H14.25c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25V2.75c0-.464.184-.91.513-1.237ZM1.75 2.5a.25.25 0 0 0-.25.25v.5h13V4.75a.25.25 0 0 0-.25-.25H7.75A1.75 1.75 0 0 1 6.35 3.8l-.9-1.2a.25.25 0 0 0-.2-.1H1.75Z'/%3E%3C/svg%3E"); }
 .xp-folder-closed { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1Z'/%3E%3C/svg%3E"); }
+
+/* Sidebar file links — margin-right reserves space for the chevron */
 .sidebar ul li a { color: #57606a; font-size: 13px; padding: 5px 8px 5px 16px; margin-right: 8px; border-radius: 6px; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; transition: background 0.1s, color 0.1s; }
 .sidebar ul li a:hover { background: rgba(208,215,222,0.32); color: #1f2328; }
 .sidebar ul li.active > a { background: rgba(208,215,222,0.48); color: #1f2328; }
@@ -67,12 +69,39 @@ body.close .content { left: 0; }
 .sidebar ul li a:hover .xp-item-icon, .sidebar ul li.active > a .xp-item-icon { color: #1f2328; }
 .xp-folder-btn .xp-folder-icon { color: #8c959f; }
 .xp-folder-btn:hover .xp-folder-icon { color: #57606a; }
+.xp-sub-toggle { position: absolute; right: 8px; top: 6px; background: none !important; border: none !important; cursor: pointer; color: #b1bac4; padding: 2px; display: flex; align-items: center; flex-shrink: 0; transition: transform 0.2s, color 0.15s; }
+.xp-sub-toggle:hover { color: #57606a; }
+.xp-sub-toggle-open { transform: rotate(180deg); }
+.xp-heading-depth { font-family: ui-monospace, monospace; font-size: 10px; color: #b1bac4; flex-shrink: 0; margin-right: 4px; }
 .app-sub-sidebar { margin: 1px 0 3px 0 !important; padding-left: 0 !important; border-left: 1px solid #d0d7de !important; margin-left: 21px !important; }
 .app-sub-sidebar li > a { padding: 4px 8px !important; font-size: 12px !important; color: #8c959f !important; display: flex !important; align-items: center !important; gap: 5px !important; }
 .app-sub-sidebar li > a:hover { color: #57606a !important; background: rgba(208,215,222,0.2) !important; }
 .app-sub-sidebar li.active > a { color: #0969da !important; }
-.app-sub-sidebar .xp-item-icon { color: #b1bac4; }
-.app-sub-sidebar li.active > a .xp-hash-icon { color: #0969da; }
+.app-sub-sidebar ul { display: none !important; }
+
+/* ── Anchor padding — reserves space for the chevron badge ── */
+.sidebar ul li > a { padding-right: 22px !important; }
+
+/* ── Chevron badge ── */
+.xp-chevron { position: absolute; right: 10px; top: 6px; height: 16px; width: 16px; display: flex; align-items: center; justify-content: center; color: #b1bac4; cursor: pointer; background: none; border: none; padding: 0; z-index: 2; transition: color 0.15s; }
+.xp-chevron:hover { color: #8c959f; }
+.sidebar ul li.active .xp-chevron { color: #8c959f; }
+.sidebar ul li.active .xp-chevron:hover { color: #57606a; }
+.xp-chevron svg { display: block; flex-shrink: 0; transition: transform 0.18s ease; }
+.xp-chevron.open svg { transform: rotate(90deg); }
+
+/* ── Heading panel ── */
+.xp-headings { display: none; flex-direction: column; margin: 2px 8px 6px 22px; border-left: 1px solid #d0d7de; padding: 2px 0; }
+.xp-headings.open { display: flex; }
+.xp-heading-item { display: flex; align-items: center; gap: 6px; padding: 4px 8px 4px 10px; font-size: 12px; color: #8c959f; text-decoration: none; border-radius: 5px; cursor: pointer; line-height: 1.4; min-width: 0; transition: color 0.1s, background 0.1s; }
+.xp-heading-item:hover { background: rgba(208,215,222,0.32); }
+.xp-heading-item.active { color: #0969da; }
+.xp-heading-item.active:hover { color: #0550ae; background: rgba(9,105,218,0.06); }
+.xp-heading-hash { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 10px; color: #c8cdd3; flex-shrink: 0; user-select: none; line-height: 1; transition: color 0.1s; }
+.xp-heading-item:hover .xp-heading-hash { color: #8c959f; }
+.xp-heading-item.active .xp-heading-hash { color: #6aabff; }
+.xp-heading-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
 .xp-drag { position: fixed; top: 0; left: 270px; width: 6px; height: 100%; cursor: col-resize; z-index: 25; background: rgba(140,149,159,0.2); }
 .xp-drag:hover, .xp-drag:active { background: rgba(9,105,218,0.4); }
 #xp-toggle { position: fixed; top: 50%; left: 269px; transform: translateY(-50%); z-index: 26; width: 16px; height: 48px; background: #eaeef2; border: 1px solid rgba(27,31,35,0.15); border-left: none; border-radius: 0 6px 6px 0; cursor: pointer; color: #57606a; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.15s, color 0.15s; }
@@ -153,5 +182,13 @@ span.xp-unrendered:hover { color: #8c959f; cursor: pointer; }
 #xp-gh-page-btn svg { width: 18px; height: 18px; display: block; }
 
 @media screen and (max-width: 1100px) and (min-width: 600px) { .sidebar { width: 240px; } .content { left: 240px; } .xp-drag { left: 240px; } #xp-toggle { left: 239px; } }
-@media screen and (max-width: 599px) { .sidebar { position: fixed; width: 100vw !important; z-index: 30; } .content { left: 0 !important; padding-top: 56px; } .xp-drag { display: none !important; } }
+
+@media screen and (max-width: 599px) {
+  .sidebar { position: fixed; width: 100vw !important; z-index: 30; }
+  .content { left: 0 !important; padding-top: 56px; overflow-x: hidden; }
+  .xp-drag { display: none !important; }
+  body:not(.close) { overflow: hidden; }
+  body.close .sidebar { pointer-events: none !important; }
+}
+
 @media print { .sidebar, #xp-toggle, #xp-mobile-btn, .xp-drag, .app-nav, #xp-gh-page-btn { display: none !important; } .content { left: 0 !important; } }

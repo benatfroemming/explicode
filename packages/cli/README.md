@@ -48,9 +48,7 @@ npx explicode build --dark   # dark theme
 
 ### Skipped directories
 
-By default, Explicode skips nothing, you control what gets scanned via a `.docignore` file in your project root.
-
-`.docignore` works exactly like `.gitignore`: one pattern per line, supports globs, directory-only patterns, and negation.
+Control what Explicode scans by adding a `.docignore` file to your project root. It works exactly like `.gitignore`: one pattern per line, supporting globs, directory-only patterns, and negation.
 
 ```gitignore
 # Directories
@@ -70,7 +68,7 @@ config/local.json
 !important.log
 ```
 
-> **Note:** `docs/` is always excluded automatically since it's Explicode's output folder.
+> **Note:** `docs/` and hidden files (`.*`) are always excluded automatically.
 
 ## GitHub Pages
 
@@ -121,6 +119,40 @@ jobs:
 
 This workflow publishes your docs to a `gh-pages` branch. In your repository settings, enable GitHub Pages and select the root `(/)` of the `gh-pages` branch as the source.
 
+## Media and Links
+
+### Media
+
+Supported file types: `png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, `pdf`, `mp4`, `mp3`. Use external URLs or relative paths,  relative paths resolve from the current file's location.
+
+```markdown
+![Same folder](diagram.png)
+![Subfolder](images/diagram.png)
+![Parent folder](../diagram.png)
+![External](https://picsum.photos/200/300)
+```
+
+### Links
+
+External URLs open in a new tab. Markdown files can be interlinked using relative paths.
+
+```markdown
+[Same folder](other.md)
+[Subfolder](guide/intro.md)
+[Parent folder](../README.md)
+[External](https://explicode.com)
+```
+
+To link to a specific heading in another file, use `?id=` followed by the heading title in lowercase with spaces replaced by hyphens and special characters removed.
+
+```markdown
+[Link to heading](other.md?id=how-to-test-code)
+```
+
+For same-page heading links, use a standard `#` anchor.
+```markdown
+[Same page heading](#how-to-test-code)
+```
 
 ## Themes
 
@@ -136,7 +168,7 @@ The theme is baked into `docs/ghmd.css` at build time. Re-run with or without `-
 
 After a build, your `docs/` folder will look like this:
 
-```
+```text
 docs/
   index.html        # Docsify entry point
   README.md         # your project readme (home page)

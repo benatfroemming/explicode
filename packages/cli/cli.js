@@ -58,6 +58,10 @@ const SUPPORTED_LANGUAGES = new Set([
   'txt',
 ]);
 
+const SUPPORTED_ASSETS = new Set([
+  'png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'pdf', 'mp4', 'mp3', 'pdf'
+]);
+
 // Directories to always skip when scanning
 function loadDocIgnore(cwd) {
   const ignorePath = path.join(cwd, '.docignore');
@@ -132,7 +136,7 @@ function parsePython(src) {
         i += 3;
         const closeIdx = src.indexOf(q3, i);
         const inner = (closeIdx === -1 ? src.slice(i) : src.slice(i, closeIdx)).trim();
-        if (inner) raw.push({ type: 'doc', content: inner });
+        if (inner) raw.push({ type: 'doc', content: inner, fromComment: true });
         i = closeIdx === -1 ? n : closeIdx + 3;
         codeStart = i;
       } else {
@@ -175,7 +179,7 @@ function parseCStyle(src) {
       if (chunk) raw.push({ type: 'code', content: chunk });
     }
     const inner = stripJsDocStars(match[0].replace(/^\/\*+/, '').replace(/\*+\/$/, ''));
-    if (inner) raw.push({ type: 'doc', content: inner });
+    if (inner) raw.push({ type: 'doc', content: inner, fromComment: true });
     cursor = start + match[0].length;
   }
 
@@ -326,6 +330,7 @@ function build() {
   const outDir = path.join(cwd, 'docs');
   const ig = loadDocIgnore(cwd);
   ig.add('docs/');
+  ig.add('.*');
 
   fs.mkdirSync(outDir, { recursive: true });
 
@@ -366,6 +371,16 @@ function build() {
     // Root README was already copied above; just mark it rendered so it gets a sidebar link
     if (relPath === rootReadme) {
       renderedSet.add(relPath);
+      continue;
+    }
+
+    const ext = relPath.split('.').pop()?.toLowerCase() ?? '';
+
+    if (SUPPORTED_ASSETS.has(ext)) {
+      const outPath = path.join(outDir, relPath);
+      fs.mkdirSync(path.dirname(outPath), { recursive: true });
+      fs.copyFileSync(path.join(cwd, relPath), outPath);
+      console.log(`${relPath} -> docs/${relPath} (asset)`);
       continue;
     }
 

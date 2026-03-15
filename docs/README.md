@@ -9,9 +9,9 @@ The *VS Code extension* provides live previews of your documentation directly in
 
 <br>
 
-[![](https://img.shields.io/badge/Download-0078D4?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)[![](https://img.shields.io/badge/VS_Code_Extension-005a9e?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)
+[![](https://img.shields.io/badge/Install-0078D4?style=for-the-badge&logo=visual-studio-code&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)[![](https://img.shields.io/badge/VS_Code_Extension-005a9e?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)
 
-[![](https://img.shields.io/badge/Documentation-npm-FF0000?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/explicode)
+[![](https://img.shields.io/badge/Install-CC0000?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/explicode)[![](https://img.shields.io/badge/NPM_Package-8B0000?style=for-the-badge)](https://www.npmjs.com/package/explicode)
 
 [![View on GitHub](https://img.shields.io/badge/View_on_GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/benatfroemming/explicode)
 
@@ -184,6 +184,7 @@ Explicode currently supports:
 - Objective-C
 - SQL
 - Markdown
+- txt
 
 Need support for another language? Open an issue or reach out.
 
