@@ -439,18 +439,42 @@
         });
 
         // ── Active file detection ────────────────────────────────────────────
-        // Parse current URL: file path and heading fragment.
+        // Resolve path segments including '..' so stats/../geo/x == geo/x.
+        function resolvePath(p) {
+          var parts = p.split('/');
+          var out = [];
+          for (var i = 0; i < parts.length; i++) {
+            if (parts[i] === '..') { if (out.length) out.pop(); }
+            else if (parts[i] !== '.') { out.push(parts[i]); }
+          }
+          return out.join('/');
+        }
+
+        // Normalize a hash/href to a canonical key for comparison.
+        // strips #, #/, ?id=, trailing slash, resolves .., strips pipeline-added .md suffix.
+        function normalizeHref(h) {
+          var s = (h || '').replace(/^#+\/?/, '').replace(/\?.*$/, '').replace(/\/$/, '');
+          s = resolvePath(s);
+          // strip trailing .md only if added by pipeline (foo.py.md → foo.py, README.md stays)
+          if (s.endsWith('.md')) {
+            var withoutMd = s.slice(0, -3);
+            if (withoutMd.indexOf('.') !== -1) s = withoutMd;
+          }
+          return s.toLowerCase();
+        }
+
         var rawHash = window.location.hash;
-        var urlFilePath = rawHash.replace(/^#\/?/, '').replace(/\?.*$/, '');
+        var urlFilePath = normalizeHref(rawHash);
         var urlFragment = (rawHash.match(/[?&]id=([^&]*)/) || [])[1] || '';
         activeHeadingId = urlFragment;
 
-        // Find the active file li by href matching.
+        // Find the active file li by normalized href matching.
         var currentFileLi = null;
         nav.querySelectorAll('a').forEach(function(a) {
           if (currentFileLi) return;
-          var href = (a.getAttribute('href') || '').replace(/^#\/?/, '').replace(/\?.*$/, '');
-          if (href === urlFilePath || (!urlFilePath && (!href || href === 'README' || href === 'README.md'))) {
+          var norm = normalizeHref(a.getAttribute('href') || '');
+          // Match exact path, or match root (empty hash → README)
+          if (norm === urlFilePath || (!urlFilePath && (!norm || norm === 'readme' || norm === 'readme.md'))) {
             currentFileLi = a.closest('li');
           }
         });

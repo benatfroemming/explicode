@@ -4,6 +4,8 @@
 
 Documentation for the Explicode CLI can be found on [npm](https://www.npmjs.com/package/explicode?activeTab=readme).
 
+[![](https://img.shields.io/badge/View-00A300?style=for-the-badge&logoColor=white)](https://benatfroemming.github.io/explicode-demo)[![](https://img.shields.io/badge/Live_Demo-00875a?style=for-the-badge)](https://benatfroemming.github.io/explicode-demo)
+
 ## Commands
 
 ### `convert`

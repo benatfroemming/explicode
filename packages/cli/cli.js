@@ -266,9 +266,10 @@ function buildSidebarMarkdown(allFiles, renderedSet, outRelPathFn, rootReadme) {
     }
     for (const [, child] of files) {
       if (child.file.rendered) {
-        lines.push(`${indent}- [${child.file.label}](${child.file.outRelPath})`);
+        // Prefix with / so Docsify treats it as root-relative, not relative to the currently viewed file.
+        const absPath = child.file.outRelPath === '/' ? '/' : '/' + child.file.outRelPath;
+        lines.push(`${indent}- [${child.file.label}](${absPath})`);
       } else {
-        // Unrendered: plain span, no link — styled as grayed-out, but shows GitHub icon on hover
         lines.push(`${indent}- <span class="xp-unrendered" data-path="${child.file.relPath}">${child.file.label}</span>`);
       }
     }

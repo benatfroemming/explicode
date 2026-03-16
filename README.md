@@ -15,6 +15,8 @@ The *VS Code extension* provides live previews of your documentation directly in
 
 [![View on GitHub](https://img.shields.io/badge/View_on_GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/benatfroemming/explicode)
 
+[![](https://img.shields.io/badge/View-00A300?style=for-the-badge&logoColor=white)](https://benatfroemming.github.io/explicode-demo)[![](https://img.shields.io/badge/Live_Demo-00875a?style=for-the-badge)](https://benatfroemming.github.io/explicode-demo)
+
 ## Features
 
 - ✍️ Write Markdown directly inside your code comments
