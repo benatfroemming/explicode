@@ -1,4 +1,3 @@
-// webview-ui/src/components/docRenderer.tsx
 import { useEffect, useRef, useMemo } from 'react';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -40,7 +39,6 @@ const ResolvedImage: React.FC<{
   );
 };
 
-// Mermaid lives outside ReactMarkdown so it never gets unmounted on rerender
 const MermaidBlock: React.FC<{ code: string; isDark: boolean }> = React.memo(({ code, isDark }) => {
   const ref = useRef<HTMLDivElement>(null);
   const lastCode = useRef<string>('');
@@ -70,7 +68,6 @@ const toId = (children: React.ReactNode): string =>
 
 type Segment = { type: 'doc'; content: string } | { type: 'code'; content: string };
 
-// A doc segment split into markdown parts and mermaid blocks
 type DocPart =
   | { type: 'markdown'; content: string }
   | { type: 'mermaid'; code: string };
@@ -100,9 +97,9 @@ const C_STYLE_LANGUAGES = new Set([
 
 export const SUPPORTED_LANGUAGES = new Set([
   ...C_STYLE_LANGUAGES,
-  'python',   // """ """ or ''' '''
-  'markdown', // rendered directly
-  'txt',      // rendered directly
+  'python',
+  'markdown',
+  'txt',
 ]);
 
 function parsePython(src: string): Segment[] {
@@ -282,15 +279,17 @@ const DocRenderer: React.FC<DocRendererProps> = ({ fileText, language, theme, re
       if (isAnchor) {
         return (
           <a
-            href={href}
+            href="#"
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               const el = document.getElementById(href!.slice(1));
-              if (el) {
-                requestAnimationFrame(() => {
-                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                });
-              }
+              const container = document.querySelector<HTMLElement>('.doc-content');
+              if (!el || !container) return;
+              container.scrollTo({
+                top: el.offsetTop - 16,
+                behavior: 'smooth',
+              });
             }}
           >
             {children}
@@ -431,7 +430,6 @@ const DocRenderer: React.FC<DocRendererProps> = ({ fileText, language, theme, re
             </SyntaxHighlighter>
           </div>
         ) : (
-          // Split doc segments so mermaid blocks live outside ReactMarkdown
           <div key={segIdx} className={`seg-doc ghmd ${themeClass}`}>
             {splitMermaid(seg.content).map((part, partIdx) =>
               part.type === 'mermaid' ? (

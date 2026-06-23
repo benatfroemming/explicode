@@ -6,7 +6,7 @@ Because the documentation lives inside comments, it doesn't affect your program 
 
 Open a live preview panel in `VSCode` to see your code and documentation rendered side-by-side in real time. When you're ready to share, export the result as `Markdown` or `HTML`.
 
-![](https://raw.githubusercontent.com/benatfroemming/explicode-extension/master/demo.gif)
+![](https://raw.githubusercontent.com/benatfroemming/explicode/master/media/demo.gif)
 
 
 ## How It Works

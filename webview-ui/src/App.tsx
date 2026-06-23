@@ -1,4 +1,3 @@
-// webview-ui/src/App.tsx
 import { useEffect, useState, useRef } from 'react';
 import './App.css';
 import DocRenderer, { buildSegments } from './components/docRenderer';
@@ -17,16 +16,17 @@ if (typeof window.acquireVsCodeApi !== 'undefined' && !window.vscodeApi) {
 }
 
 function App() {
-  const [filePath, setFilePath]       = useState<string>('');
-  const [fileName, setFileName]       = useState<string>('');
-  const [fileText, setFileText]       = useState<string>('');
-  const [language, setLanguage]       = useState<string>('plaintext');
-  const [isDark, setIsDark]           = useState(true);
+  const [filePath, setFilePath]         = useState<string>('');
+  const [fileName, setFileName]         = useState<string>('');
+  const [fileText, setFileText]         = useState<string>('');
+  const [language, setLanguage]         = useState<string>('plaintext');
+  const [isDark, setIsDark]             = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [resolvedImages, setResolvedImages] = useState<Record<string, string>>({});
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const pendingScrollTopRef = useRef(false);
+  const dropdownRef         = useRef<HTMLDivElement>(null);
+  const fileInputRef        = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     window.vscodeApi?.postMessage({ type: 'requestFile' });
@@ -45,6 +45,7 @@ function App() {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       const message = event.data;
+
       if (message.type === 'fileData') {
         const fp = message.filePath || '';
         setFilePath(fp);
@@ -53,18 +54,26 @@ function App() {
         setLanguage(getLanguageFromFilePath(fp));
         setResolvedImages(message.images || {});
       }
+
       if (message.type === 'scroll-to-anchor') {
-        const el = document.getElementById(message.anchor);
-        if (el) {
-          requestAnimationFrame(() => {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        requestAnimationFrame(() => {
+          const el = document.getElementById(message.anchor);
+          const container = document.querySelector<HTMLElement>('.doc-content');
+          if (!el || !container) return;
+          container.scrollTo({
+            top: el.offsetTop - 16,
+            behavior: 'smooth',
           });
-        }
+        });
       }
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, []);
+
+  useEffect(() => {
+    document.querySelector<HTMLElement>('.doc-content')?.scrollTo({ top: 0, behavior: 'instant' });
+  }, [filePath]);
 
   const handleHelp = () => {
     setDropdownOpen(false);
@@ -85,6 +94,7 @@ function App() {
     const reader = new FileReader();
     reader.onload = (e) => {
       const text = e.target?.result as string;
+      pendingScrollTopRef.current = true;
       setFileText(text);
       setFileName(file.name);
       setFilePath(file.name);

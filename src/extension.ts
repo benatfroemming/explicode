@@ -32,7 +32,7 @@ class ExplicodeViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'explicode.panel';
   private _view?: vscode.WebviewView;
   private _pendingAnchor?: string;
-
+  private _pendingAnchorForWebview?: string | null;
 
   constructor(private readonly context: vscode.ExtensionContext) {}
 
@@ -117,6 +117,7 @@ class ExplicodeViewProvider implements vscode.WebviewViewProvider {
           const doc = await vscode.workspace.openTextDocument(vscode.Uri.file(targetPath));
           await vscode.window.showTextDocument(doc);
           this._pendingAnchor = anchor;
+          this._pendingAnchorForWebview = anchor;
         }
       }
 
@@ -160,7 +161,10 @@ class ExplicodeViewProvider implements vscode.WebviewViewProvider {
       fileName: path.basename(filePath),
       fileText: fileContent,
       images: resolveLocalImages(fileContent, fileDir),
+      anchor: this._pendingAnchorForWebview,
+      scrollToTop: this._pendingAnchorForWebview === null,
     });
+    this._pendingAnchorForWebview = undefined;
   }
 
   public show() {
