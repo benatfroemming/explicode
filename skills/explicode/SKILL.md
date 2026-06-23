@@ -5,7 +5,7 @@ description: >
   whenever writing any code from scratch or adding/editing code in a supported language (Python,
   JavaScript, TypeScript, JSX, TSX, Java, C, C++, C#, Go, Rust, PHP, Swift, Kotlin, Scala,
   Dart, Objective-C, SQL). Always apply Explicode unless the user explicitly says they don't
-  want comments. Also trigger when the user asks to add comments or documentation to an existing
+  want it. Also trigger when the user asks to add comments or documentation to an existing
   file, says "explicode", or asks to annotate/document provided code.
 ---
 

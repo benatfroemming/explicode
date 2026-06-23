@@ -210,7 +210,6 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ── Doc container (DocRenderer root) ── */
 .doc-container {
-  max-width: 860px;
   margin: 0 auto;
   padding: 40px 48px;
 }

@@ -2,11 +2,15 @@
 
 > **Explicode** lets you write rich **Markdown** documentation directly inside your code comments, turning a single source file into both **runnable code and clean documentation**.
 
-Because the documentation lives inside comments, it doesn't affect your program or build process — no special tooling required, and it works across many languages. Documentation stays accurate by evolving alongside the code, automatically versioned in Git. Open a live preview in VSCode to see rendered docs side-by-side with your code, then export as Markdown or HTML when ready to share.
+Because the documentation lives **inside comments**, it doesn't affect your program, runtime, or build process — **no special tooling required**. Explicode works across **many programming languages**, allowing teams to adopt it without changing their existing workflows or project structure. Documentation stays **close to the code it describes**, making it easier to keep information accurate as the codebase evolves. Since both code and documentation live in the same file, updates happen together and are automatically **versioned in Git**, reducing the risk of stale or forgotten documentation.
 
-For coding agents, Explicode keeps code and docs tightly coupled, providing high-quality context that helps agents understand what the code does and why without jumping between files. Teach your AI to write code with documentation using this [skill](./skills/explicode/SKILL.md).
+Open a **live preview in VSCode** to see beautifully rendered documentation side-by-side with your code while you write. When you're ready to share your work, **export to Markdown or HTML** for publishing, collaboration, or integration with existing documentation sites.
 
 ![](https://raw.githubusercontent.com/benatfroemming/explicode/master/media/demo.gif)
+
+## Coding Agents
+
+Explicode keeps **code and docs tightly coupled**, providing **high-quality context** that helps agents understand **what the code does and why** without jumping between files. Teach your AI to write code with documentation using this [skill](./skills/explicode/SKILL.md).
 
 
 ## How It Works
