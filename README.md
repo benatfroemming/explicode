@@ -74,7 +74,7 @@ Supported file types: `png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`. Use external U
 
 ### Links
 
-Repository files can be interlinked using relative paths. External URLs open in a new tab.
+Repository files can be interlinked using relative paths. External URLs open in a new browser tab.
 
 ````markdown
 [Same folder](app.py)
@@ -92,7 +92,7 @@ To link to a specific heading in another file, use `#` followed by the heading t
 
 ### Math (KaTeX)
 
-Inline math uses single dollar signs, block math uses double dollar signs.
+Inline math uses single dollar signs, block math uses double dollar signs or a fenced code block with the `math` language tag.
 
 ````markdown
 Inline: $E = mc^2$

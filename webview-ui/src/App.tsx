@@ -79,7 +79,7 @@ function App() {
     setDropdownOpen(false);
     window.vscodeApi?.postMessage({
       type: 'open-link',
-      url: 'https://marketplace.visualstudio.com/items?itemName=Explicode.explicode',
+      url: 'https://github.com/benatfroemming/explicode',
     });
   };
 

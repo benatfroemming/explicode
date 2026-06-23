@@ -12,6 +12,7 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 **/.vscode-test.*
+.DS_Store
 
 # Allow images folder (GIFs, PNGs, etc.)
 !images/**
