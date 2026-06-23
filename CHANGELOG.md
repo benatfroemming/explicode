@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Ongoing improvements and bug fixes.
+- Additional language support: HTML, CSS, etc.
 
 ---
 

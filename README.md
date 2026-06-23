@@ -2,9 +2,9 @@
 
 > **Explicode** lets you write rich **Markdown** documentation directly inside your code comments, turning a single source file into both **runnable code and clean documentation**.
 
-Because the documentation lives inside comments, it doesn't affect your program or build process — no special compilers, configuration, or tooling changes required. Simply write Markdown in your comments as you code. Keeping documentation in the same file as the code ensures it stays accurate and up to date, evolving alongside the implementation and automatically versioned with your project in `Git`. Explicode brings the principles of literate programming to modern development across many languages, without language-specific frameworks or tedious setup.
+Because the documentation lives inside comments, it doesn't affect your program or build process — no special tooling required, and it works across many languages. Documentation stays accurate by evolving alongside the code, automatically versioned in Git. Open a live preview in VSCode to see rendered docs side-by-side with your code, then export as Markdown or HTML when ready to share.
 
-Open a live preview panel in `VSCode` to see your code and documentation rendered side-by-side in real time. When you're ready to share, export the result as `Markdown` or `HTML`.
+For coding agents, Explicode keeps code and docs tightly coupled, providing high-quality context that helps agents understand what the code does and why without jumping between files. Teach your AI to write code with documentation using this [skill](./skills/explicode/SKILL.md).
 
 ![](https://raw.githubusercontent.com/benatfroemming/explicode/master/media/demo.gif)
 
