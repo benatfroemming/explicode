@@ -79,7 +79,7 @@ function App() {
     setDropdownOpen(false);
     window.vscodeApi?.postMessage({
       type: 'open-link',
-      url: 'https://github.com/benatfroemming/explicode',
+      url: 'https://explicode.com/docs',
     });
   };
 

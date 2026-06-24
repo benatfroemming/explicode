@@ -205,4 +205,4 @@ Need support for another language? Open an issue or reach out.
 
 ## Contact
 
-Email [froem076@umn.edu](mailto:froem076@umn.edu) with bug reports, feature requests, or collaboration inquiries.
+Contact us [here](https://explicode.com/contact) with bug reports, feature requests, or collaboration inquiries.

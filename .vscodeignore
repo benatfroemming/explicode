@@ -15,5 +15,5 @@ vsc-extension-quickstart.md
 .DS_Store
 
 # Allow images folder (GIFs, PNGs, etc.)
-!images/**
+!media/**
 
