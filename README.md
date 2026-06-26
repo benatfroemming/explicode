@@ -2,16 +2,29 @@
 
 > **Explicode** lets you write rich **Markdown** documentation directly inside your code comments, turning a single source file into both **runnable code and clean documentation**.
 
-Because the documentation lives **inside comments**, it doesn't affect your program, runtime, or build process — **no special tooling required**. Explicode works across **many programming languages**, allowing teams to adopt it without changing their existing workflows or project structure. Documentation stays **close to the code it describes**, making it easier to keep information accurate as the codebase evolves. Since both code and documentation live in the same file, updates happen together and are automatically **versioned in Git**, reducing the risk of stale or forgotten documentation.
+Explicode is inspired by **literate programming**, first introduced by **Donald Knuth**, which argues that code should be written for humans as well as computers, and now, increasingly, for agents as well. Explicode is a modern take on this idea, focusing on simplicity, readability, and flexibility.
 
-Open a **live preview in VSCode** to see beautifully rendered documentation side-by-side with your code while you write. When you're ready to share your work, **export to Markdown or HTML** for publishing, collaboration, or integration with existing documentation sites.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/benatfroemming/explicode?style=social)](https://github.com/YOUR_GITHUB_USER/YOUR_REPO)
+[![VS Code Install](https://img.shields.io/badge/VS_Code-Install-0078d7?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)
+
+## Why Explicode?
+
+- 📝 **Documentation lives inside your code comments**, keeping files fully executable with no separate documentation files to maintain.
+- 🎨 **Rich documentation support** with Markdown, syntax-highlighted code blocks, LaTeX math, images, Mermaid diagrams, and interlinked files.
+- ⚡ **No special tooling or build process**, just follow simple comment conventions and you're ready to go.
+- 🔄 **Documentation stays close to the code** it describes, making it much less likely to become outdated.
+- 🌍 **Works across 15+ programming languages** without requiring changes to your existing workflow.
+- 🤖 **Better context for AI coding agents** by keeping documentation and implementation together in the same file.
+- 🌿 **Automatically versioned with Git** since documentation lives alongside your source code.
+- 👀 **Live preview in VS Code** with beautifully rendered documentation displayed side-by-side as you write.
+- 📄 **Export to Markdown or HTML** for publishing, sharing, or collaborating with others.
+
+## Demo
 
 ![](https://raw.githubusercontent.com/benatfroemming/explicode/master/media/demo.gif)
 
-## Coding Agents
-
-Explicode keeps **code and docs tightly coupled**, providing **high-quality context** that helps agents understand **what the code does and why** without jumping between files. Teach your AI to write code with documentation using this [skill](./skills/explicode/SKILL.md).
-
+Watch a quick walkthrough of Explicode in action. The demo shows how to open a source file containing inline documentation on the extension, and see it instantly rendered into a clean, notebook-style view alongside your code.
 
 ## How It Works
 
@@ -61,6 +74,10 @@ The ⚙️ button in the header provides additional options:
 - Toggle Dark/Light theme
 - Open the guide
 - Export the render as `.md` or `.html`
+
+## Coding Agents
+
+Explicode keeps **code and docs tightly coupled**, providing **high-quality context** that helps agents understand **what the code does and why** without jumping between files. Teach your AI to write code with documentation using this [skill](./skills/explicode/SKILL.md).
 
 
 ## Additional Features
@@ -202,7 +219,14 @@ fibonacci(5);  // [0, 1, 1, 2, 3]
 
 Need support for another language? Open an issue or reach out.
 
-
 ## Contact
 
-Contact us [here](https://explicode.com/contact) with bug reports, feature requests, or collaboration inquiries.
+Contact us with bug reports, feature requests, or collaboration inquiries using this [link](https://explicode.com/contact).
+
+## License
+
+Explicode is licensed under the [MIT License](LICENSE), making it free to use, modify, and distribute for both personal and commercial projects.
+
+Contributions are always welcome! If you'd like to improve Explicode, feel free to open an issue or submit a pull request.
+
+Explicode is privacy-friendly: **we do not collect or store your code or personal data**. Your code and documentation stays local unless you choose to share or publish it yourself.
