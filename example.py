@@ -5,24 +5,21 @@ Finds the shortest path between two vertices in a weighted graph.
 Uses a **min-heap** to always explore the nearest unexplored vertex first.
 Once a vertex is visited, no shorter path to it can exist.
 
-> Source: [TheAlgorithms/Python](https://github.com/TheAlgorithms/Python/blob/master/graphs/dijkstra.py)
->
+> Source: [TheAlgorithms/Python](https://github.com/TheAlgorithms/Python/blob/master/graphs/dijkstra.py)  
 > Rendered: [Online Renderer](https://explicode.com/view/github/benatfroemming/explicode/example.py)
 
 ## Pseudo-code
 
-~~~
-DIJKSTRA(graph G, start vertex s, destination vertex d):
-1  let H = min heap, initialized with (0, s)
-2  while H is non-empty:
-3    remove (cost, U) from H
-4    if U explored: go to line 2
-5    mark U as explored
-6    if U == d: return cost
-7    for each edge (U, V) with cost c:
-8      if V explored: skip
-9      push (cost + c, V) onto H
-~~~
+    DIJKSTRA(graph G, start vertex s, destination vertex d):
+    1  let H = min heap, initialized with (0, s)
+    2  while H is non-empty:
+    3    remove (cost, U) from H
+    4    if U explored: go to line 2
+    5    mark U as explored
+    6    if U == d: return cost
+    7    for each edge (U, V) with cost c:
+    8      if V explored: skip
+    9      push (cost + c, V) onto H
 
 The min-heap guarantees the first time we reach a vertex it's via the shortest
 path — so we never need to revisit it.
@@ -32,8 +29,8 @@ import heapq
 
 
 """
-Returns the cost of the shortest path between vertices `start` and `end`.  
-Returns `-1` if no path exists.  
+Returns the cost of the shortest path between vertices `start` and `end`. Returns `-1` if no path exists.  
+
 `>>> dijkstra(G, "E", "C")`  
 `6`  
 `>>> dijkstra(G2, "E", "F")`  
