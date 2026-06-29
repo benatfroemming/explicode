@@ -56,7 +56,7 @@ Use Markdown syntax inside the multiline comments of your favorite language:
     // Single-line comments are NOT rendered as Markdown, they stay as code.
 ````
 
-Everything outside a doc block is rendered as a syntax-highlighted code block. Full [CommonMark](https://www.markdownguide.org/basic-syntax/) syntax is supported, including headings, lists, math, images, tables, diagrams, and more.
+Everything outside a doc block is rendered as a syntax-highlighted code block.
 
 
 ## Quick Start
@@ -81,6 +81,10 @@ Explicode keeps **code and docs tightly coupled**, providing **high-quality cont
 
 
 ## Additional Features
+
+### Text
+
+Full [CommonMark](https://www.markdownguide.org/basic-syntax/) syntax is supported, including headings, lists, math, images, tables, diagrams, and more. Use double space at the end of a line for new line.
 
 ### Media
 
