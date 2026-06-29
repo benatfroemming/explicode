@@ -1,12 +1,15 @@
 """
 # Dijkstra's Shortest Path Algorithm
 
+[Pseudo-code](#pseudo-code) | [Implementation](#implementation) | [Example Graphs](#example-graphs)
+
 Finds the shortest path between two vertices in a weighted graph.
 Uses a **min-heap** to always explore the nearest unexplored vertex first.
 Once a vertex is visited, no shorter path to it can exist.
 
 > Source: [TheAlgorithms/Python](https://github.com/TheAlgorithms/Python/blob/master/graphs/dijkstra.py)  
-> Rendered: [Online Renderer](https://explicode.com/view/github/benatfroemming/explicode/example.py)
+> Rendered: [Online Renderer](https://explicode.com/view/github/benatfroemming/explicode/main/example.py)
+
 
 ## Pseudo-code
 
@@ -31,16 +34,9 @@ import heapq
 
 
 """
-Returns the cost of the shortest path between vertices `start` and `end`. Returns `-1` if no path exists.  
+## Implementation
 
-```txt
->>> dijkstra(G, "E", "C")
-6
->>> dijkstra(G2, "E", "F")
-3
->>> dijkstra(G3, "E", "F")
-3
-```
+Returns the cost of the shortest path between vertices `start` and `end`. Returns `-1` if no path exists.  
 """
 def dijkstra(graph, start, end):
     heap = [(0, start)]  # cost from start node, current node
