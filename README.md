@@ -2,89 +2,88 @@
 
 > **Explicode** lets you write rich **Markdown** documentation directly inside your code comments, turning a single source file into both **runnable code and clean documentation**.
 
-Explicode is inspired by **literate programming**, first introduced by **Donald Knuth**, which argues that code should be written for humans as well as computers, and now, increasingly, for agents as well. Explicode is a modern take on this idea, focusing on simplicity, readability, and flexibility.
+Explicode is inspired by **literate programming**, first introduced by **Donald Knuth**, which argues that code should be written for both humans and computers, and now, increasingly, for agents as well. Explicode is a modern take on this idea, focusing on simplicity, readability, and flexibility.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/benatfroemming/explicode?style=social)](https://github.com/YOUR_GITHUB_USER/YOUR_REPO)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
 [![VS Code Install](https://img.shields.io/badge/VS_Code-Install-0078d7?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)
 
 ## Why Explicode?
 
-- 📝 **Documentation lives inside your code comments**, keeping files fully executable with no separate documentation files to maintain.
-- 🎨 **Rich documentation support** with Markdown, syntax-highlighted code blocks, LaTeX math, images, Mermaid diagrams, and interlinked files.
-- ⚡ **No special tooling or build process**, just follow simple comment conventions and you're ready to go.
-- 🔄 **Documentation stays close to the code** it describes, making it much less likely to become outdated.
-- 🌍 **Works across 15+ programming languages** without requiring changes to your existing workflow.
-- 🤖 **Better context for AI coding agents** by keeping documentation and implementation together in the same file.
-- 🌿 **Automatically versioned with Git** since documentation lives alongside your source code.
-- 👀 **Live preview in VS Code** with beautifully rendered documentation displayed side-by-side as you write.
-- 📄 **Export to Markdown or HTML** for publishing, sharing, or collaborating with others.
+- 📝 **Docs live in code comments**, no separate files to maintain.
+- 🎨 **Rich Markdown formatting**: syntax highlighting, LaTeX, images, Mermaid, interlinking.
+- 🌍 **15+ programming languages supported**, no workflow changes needed.
+- 👀 **Live preview in VS Code**, side-by-side.
+- ⚡ **No configurations or complex tooling required**, just simple comment conventions.
+- 🔄 **Less likely to go stale** since docs sit right next to the code.
+- 🤖 **Better AI context**, docs and code in one file.
+- 🌿 **Versioned with Git** automatically.
+- 📄 **Export to Markdown or HTML** for sharing.
 
 ## Demo
 
 ![](https://raw.githubusercontent.com/benatfroemming/explicode/master/media/demo.gif)
 
-Watch a quick walkthrough of Explicode in action. The demo shows how to open a source file containing inline documentation on the extension, and see it instantly rendered into a clean, notebook-style view alongside your code.
-
-## How It Works
-
-Use Markdown syntax inside the multiline comments of your favorite language:
-
-- ### Python — Docstring triple-quotes
-
-    Explicode looks for triple-quoted strings (`"""` or `'''`) that start at the **beginning of a line** (only whitespace before them). These are the same positions Python uses for docstrings — at the top of a module, class, or function. Triple-quotes used as regular string values mid-expression are ignored.
-
-````python
-    """
-    This is a Markdown doc block — triple-quote is at the start of the line.
-    """
-
-    x = """this is NOT a doc block — it's a string value assigned to a variable"""
-````
-
-- ### C-family languages — Block comments
-
-    For all other supported languages, Explicode renders any `/* ... */` block comment as Markdown. JSDoc-style `/** ... */` comments are also supported.
-
-````javascript
-    /*
-    This is a Markdown doc block.
-    */
-
-    /** This too — leading asterisks are stripped automatically. */
-
-    // Single-line comments are NOT rendered as Markdown, they stay as code.
-````
-
-Everything outside a doc block is rendered as a syntax-highlighted code block.
-
+A quick walkthrough of the Explicode VS Code extension: open a source file with inline documentation and see it instantly rendered into a clean, notebook-style view alongside your code.
 
 ## Quick Start
 
-Open any supported file in VSCode, then either:
-
+Open any supported file in VS Code, then either:
 - Press `Ctrl+Alt+E` (or `Cmd+Alt+E` on Mac)
 - Right-click in the editor and select **Open with Explicode**
-- Find the Explicode icon in your sidebar
+- Click the Explicode icon in your sidebar
 
-
-This opens a live preview panel in the sidebar that updates as you edit. We recommend moving the extension to the second sidebar.
+This opens a live preview panel that updates as you edit. We recommend moving the extension to the second sidebar.
 
 The ⚙️ button in the header provides additional options:
 - Toggle Dark/Light theme
 - Open the guide
 - Export the render as `.md` or `.html`
 
+## Supported Languages
+
+Python · JavaScript / TypeScript · JSX / TSX · Java · C / C++ / C# · CUDA · Go · Rust · PHP · Swift · Kotlin · Scala · Dart · Objective-C · SQL · Markdown · Plain text
+
+Want to add a language? See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Coding Agents
 
-Explicode keeps **code and docs tightly coupled**, providing **high-quality context** that helps agents understand **what the code does and why** without jumping between files. Teach your AI to write code with documentation using this [skill](./skills/explicode/SKILL.md).
+Explicode keeps **code and docs tightly coupled**, giving agents **high-quality context** to understand **what the code does and why** without jumping between files. Teach your AI to write code with embedded documentation: copy [`SKILL.md`](./skills/explicode/SKILL.md) into `.claude/skills/explicode/` for Claude or `.cursor/skills/explicode/` for Cursor in your project root.
 
+## How It Works
+Use Markdown syntax inside multiline comments:
 
-## Additional Features
+- ### Python — Docstring triple-quotes
+    Explicode looks for triple-quoted strings (`"""` or `'''`) that open a line — nothing precedes them but whitespace. Triple-quotes used mid-expression as string values are ignored.  
+
+    ```python
+    """
+    This is a Markdown doc block
+    """
+
+    x = """this is NOT a doc block"""
+
+    # Single-line comments are NOT rendered as Markdown, they stay as code.
+    ```
+- ### C-family languages — Block comments
+    Explicode renders any `/* ... */` block comment as Markdown. JSDoc-style `/** ... */` comments are also supported.
+    ```javascript
+    /*
+    This is a Markdown doc block.
+    */
+
+    /** This is valid too, leading asterisks are stripped automatically. */
+
+    // Single-line comments are NOT rendered as Markdown, they stay as code.
+    ```
+
+Everything outside a doc block renders as a syntax-highlighted code block.
+
+## Syntax Support
 
 ### Text
 
-Full [CommonMark](https://www.markdownguide.org/basic-syntax/) syntax is supported, including headings, lists, math, images, tables, diagrams, and more. Use double space at the end of a line for new line.
+Full [Markdown](https://www.markdownguide.org/basic-syntax/) syntax is supported, including headings, lists, tables, images, and more (plus math and diagrams, detailed below). Use two trailing spaces at the end of a line to force a line break.
 
 ### Media
 
@@ -148,21 +147,16 @@ graph TD
 ```
 ````
 
-
 ## Examples
-
 #### Python
-
-````python
+```python
 """
 # Fibonacci Sequence
 
 Generates the first `n` Fibonacci numbers iteratively.
-
 - **Input**: `n` (int) — how many numbers to generate
 - **Output**: list of the first `n` Fibonacci numbers
 """
-
 def fibonacci(n):
     if n <= 0:
         return []
@@ -174,63 +168,40 @@ def fibonacci(n):
     return seq
 
 fibonacci(5)  # [0, 1, 1, 2, 3]
-````
+```
 
 #### JavaScript
-
-````javascript
+```javascript
 /*
 # Fibonacci Sequence
 
 Generates the first `n` Fibonacci numbers iteratively.
-
 - **Input**: `n` (int) — how many numbers to generate
 - **Output**: list of the first `n` Fibonacci numbers
 */
-
 function fibonacci(n) {
-    if (n <= 0) return [];
-    if (n === 1) return [0];
-    const seq = [0, 1];
-    for (let i = 2; i < n; i++) {
-        seq.push(seq[i - 1] + seq[i - 2]);
-    }
-    return seq;
+  if (n <= 0) return [];
+  if (n === 1) return [0];
+  const seq = [0, 1];
+  for (let i = 2; i < n; i++) {
+    seq.push(seq[i - 1] + seq[i - 2]);
+  }
+  return seq;
 }
 
 fibonacci(5);  // [0, 1, 1, 2, 3]
-````
+```
 
-## Supported Languages
-
-- Python
-- JavaScript / TypeScript
-- JSX / TSX
-- Java
-- C / C++ / C#
-- CUDA
-- Go
-- Rust
-- PHP
-- Swift
-- Kotlin
-- Scala
-- Dart
-- Objective-C
-- SQL
-- Markdown
-- Plain text
-
-Need support for another language? Open an issue or reach out.
+See a complete working example in [`example.py`](./example.py).
 
 ## Contact
-
-Contact us with bug reports, feature requests, or collaboration inquiries using this [link](https://explicode.com/contact).
+Have a bug report, feature request, or collaboration inquiry? Reach out [here](https://explicode.com/contact).
 
 ## License
+Explicode is licensed under the [MIT License](LICENSE) — free to use, modify, and distribute for personal and commercial projects.
 
-Explicode is licensed under the [MIT License](LICENSE), making it free to use, modify, and distribute for both personal and commercial projects.
+## Contributing
+Contributions are always welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, then open an issue or submit a pull request.
 
-Contributions are always welcome! If you'd like to improve Explicode, feel free to open an issue or submit a pull request.
-
-Explicode is privacy-friendly: **we do not collect or store your code or personal data**. Your code and documentation stays local unless you choose to share or publish it yourself.
+## Privacy
+Explicode is privacy-friendly: **we do not collect or store your code or personal data**. Everything stays local unless you choose to share or publish it yourself.
