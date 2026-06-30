@@ -12,8 +12,16 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 **/.vscode-test.*
-.DS_Store
+**/.DS_Store
+
+# Exclude webview-ui dev files (keep only the built output in dist-webview/)
+webview-ui/node_modules/**
+webview-ui/src/**
+webview-ui/.gitignore
+webview-ui/eslint.config.js
+webview-ui/tsconfig.app.json
+webview-ui/tsconfig.node.json
+webview-ui/package-lock.json
 
 # Allow images folder (GIFs, PNGs, etc.)
 !media/**
-
