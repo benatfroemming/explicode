@@ -7,13 +7,15 @@ Explicode is inspired by **literate programming**, first introduced by **Donald 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 [![VS Code Install](https://img.shields.io/badge/VS_Code-Install-0078d7?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=Explicode.explicode)
+[![Open VSX](https://img.shields.io/badge/Open_VSX-Install-c160ef?logo=eclipseide)](https://open-vsx.org/extension/Explicode/explicode)
+
 
 ## Why Explicode?
 
 - 📝 **Docs live in code comments**, no separate files to maintain.
 - 🎨 **Rich Markdown formatting**: syntax highlighting, LaTeX, images, Mermaid, interlinking.
 - 🌍 **15+ programming languages supported**, no workflow changes needed.
-- 👀 **Live preview in VS Code**, side-by-side.
+- 👀 **Live preview in the IDE**, side-by-side.
 - ⚡ **No configurations or complex tooling required**, just simple comment conventions.
 - 🔄 **Less likely to go stale** since docs sit right next to the code.
 - 🤖 **Better AI context**, docs and code in one file.
@@ -24,11 +26,11 @@ Explicode is inspired by **literate programming**, first introduced by **Donald 
 
 ![](https://raw.githubusercontent.com/benatfroemming/explicode/master/media/demo.gif)
 
-A quick walkthrough of the Explicode VS Code extension: open a source file with inline documentation and see it instantly rendered into a clean, notebook-style view alongside your code.
+A quick walkthrough of the Explicode extension: open a source file with inline documentation and see it instantly rendered into a clean, notebook-style view alongside your code.
 
 ## Quick Start
 
-Open any supported file in VS Code, then either:
+Open any supported file in the IDE, then either:
 - Press `Ctrl+Alt+E` (or `Cmd+Alt+E` on Mac)
 - Right-click in the editor and select **Open with Explicode**
 - Click the Explicode icon in your sidebar
