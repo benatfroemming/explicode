@@ -5,3 +5,11 @@ node_modules
 .vscode-test/
 *.vsix
 .DS_Store
+__pycache__/
+*.egg-info/
+*.egg
+build/
+.pytest_cache/
+.venv/
+venv/
+npm/dist/
