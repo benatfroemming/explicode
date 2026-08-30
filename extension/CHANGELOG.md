@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.1] - 2026-08-30
+### Changed
+- Updated the README
+
 ## [1.0.0] - 2026-06-22
 ### Added
 - Cross-file relative link navigation with anchor support and header reference

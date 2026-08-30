@@ -2,8 +2,8 @@
   "name": "explicode",
   "displayName": "Explicode",
   "publisher": "Explicode",
-  "description": "Write Markdown inside code comments. Read your scripts like a doc.",
-  "version": "1.0.0",
+  "description": "Documentation that lives in your code, readable by humans and structured for agents.",
+  "version": "1.0.1",
   "icon": "media/logo.png",
   "keywords": [
     "documentation",
