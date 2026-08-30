@@ -1,0 +1,41 @@
+{
+  "name": "explicode",
+  "version": "0.1.0",
+  "description": "Documentation that lives in your code, readable by humans and structured for agents.",
+  "main": "src/parser.js",
+  "types": "src/index.d.ts",
+  "author": {
+    "name": "Explicode",
+    "url": "https://explicode.com"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/parser.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "explicode": "./bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "keywords": [
+    "markdown",
+    "documentation",
+    "literate programming",
+    "cli",
+    "converter"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benatfroemming/explicode.git"
+  }
+}
