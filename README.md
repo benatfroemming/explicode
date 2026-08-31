@@ -28,7 +28,7 @@ A quick walkthrough of the Explicode extension: open a source file with inline d
 Currently the project consists of two tools:
 
 - **IDE Extension** `v1.0.1`: supported in VS Code and Open VSX editors. Source code in [`/extension`](./extension/README.md).
-- **CLI** `v0.1.0`: a Node-based tool for converting scripts into Markdown via the command line or as a library. Source code in [`/cli`](./npm/README.md).
+- **CLI** `v0.1.0`: a Node-based tool for converting scripts into Markdown via the command line or as a library. Source code in [`/npm`](./npm/README.md).
 
 ## Coding Agents
 
