@@ -43,13 +43,12 @@ Python · JavaScript / TypeScript · JSX / TSX · Java · C / C++ / C# · CUDA �
 Add a stamp like the one below on your project's README to let others know you used Explicode documentation.
 
 <a href="https://github.com/benatfroemming/explicode">
-  <img src="https://raw.githubusercontent.com/benatfroemming/explicode/main/stamp.svg" alt="Documented with Explicode"
+  <img src="https://raw.githubusercontent.com/benatfroemming/explicode/main/stamp.svg" alt="Documented with Explicode" width="240" height="40" />
 </a>
-<br></br>
 
 ```html
 <a href="https://github.com/benatfroemming/explicode">
-  <img src="https://raw.githubusercontent.com/benatfroemming/explicode/main/stamp.svg" alt="Documented with Explicode"
+  <img src="https://raw.githubusercontent.com/benatfroemming/explicode/main/stamp.svg" alt="Documented with Explicode" width="240" height="40" />
 </a>
 ```
 
