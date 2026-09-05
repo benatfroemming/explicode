@@ -38,6 +38,18 @@ Explicode keeps **code and docs tightly coupled**, giving agents **high-quality 
 
 Python · JavaScript / TypeScript · JSX / TSX · Java · C / C++ / C# · CUDA · Go · Rust · PHP · Swift · Kotlin · Scala · Dart · Objective-C · SQL · Markdown · Plain text
 
+## Stamp
+
+Add a stamp like the one below on your project's README to let others know you used Explicode documentation.
+
+![stamp](./stamp.svg)
+
+```html
+<a href="https://github.com/benatfroemming/explicode">
+  <img src="https://github.com/benatfroemming/explicode/stamp.svg" alt="Documented with Explicode" />
+</a>
+```
+
 ## Contributing
 Contributions are always welcome! See [CONTRIBUTING.md](https://github.com/benatfroemming/explicode/blob/main/CONTRIBUTING.md) for guidelines, then open an issue or submit a pull request.
 
