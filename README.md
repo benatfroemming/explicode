@@ -38,14 +38,14 @@ Explicode keeps **code and docs tightly coupled**, giving agents **high-quality 
 
 Python · JavaScript / TypeScript · JSX / TSX · Java · C / C++ / C# · CUDA · Go · Rust · PHP · Swift · Kotlin · Scala · Dart · Objective-C · SQL · Markdown · Plain text
 
-## Stamp
+## Badge
 
-Add a stamp like the one below on your project's README to let others know you used Explicode documentation.
+Add a badge like the one below on your project's README to let others know you used Explicode documentation.
 
-[![Documented with Explicode](https://raw.githubusercontent.com/benatfroemming/explicode/main/stamp.svg)](https://github.com/benatfroemming/explicode)
+[![Documented with Explicode](https://raw.githubusercontent.com/benatfroemming/explicode/main/badge.svg)](https://github.com/benatfroemming/explicode)
 
 ```markdown
-[![Documented with Explicode](https://raw.githubusercontent.com/benatfroemming/explicode/main/stamp.svg)](https://github.com/benatfroemming/explicode)
+[![Documented with Explicode](https://raw.githubusercontent.com/benatfroemming/explicode/main/badge.svg)](https://github.com/benatfroemming/explicode)
 ```
 
 ## Contributing
